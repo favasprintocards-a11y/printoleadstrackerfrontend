@@ -154,3 +154,73 @@ export function getFollowUpStatus(followUpDate, leadStatus) {
     badgeClass: 'bg-[#EBE8E3] text-[#2B2B2B] border-[#E2DDD6]'
   };
 }
+
+/**
+ * Format group date heading with relative day labels (Today, Yesterday, etc.)
+ */
+export function formatGroupDateHeading(dateStr) {
+  if (!dateStr) return 'Date Not Recorded';
+  try {
+    const target = new Date(dateStr);
+    if (isNaN(target.getTime())) return dateStr;
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const targetZero = new Date(target);
+    targetZero.setHours(0, 0, 0, 0);
+
+    const diffMs = today.getTime() - targetZero.getTime();
+    const diffDays = Math.round(diffMs / (1000 * 60 * 60 * 24));
+
+    const options = { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' };
+    const dateFormatted = targetZero.toLocaleDateString('en-US', options);
+
+    if (diffDays === 0) {
+      return `Today • ${dateFormatted}`;
+    } else if (diffDays === 1) {
+      return `Yesterday • ${dateFormatted}`;
+    } else if (diffDays > 1 && diffDays < 7) {
+      return `${diffDays} days ago • ${dateFormatted}`;
+    } else {
+      return dateFormatted;
+    }
+  } catch {
+    return dateStr;
+  }
+}
+
+/**
+ * Group array of leads by upload/created_at date
+ */
+export function groupLeadsByDate(leadsList = []) {
+  const groups = [];
+  const map = new Map();
+
+  for (const lead of leadsList) {
+    let dateKey = 'unknown';
+    if (lead.created_at) {
+      const d = new Date(lead.created_at);
+      if (!isNaN(d.getTime())) {
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        dateKey = `${year}-${month}-${day}`;
+      }
+    }
+
+    if (!map.has(dateKey)) {
+      map.set(dateKey, {
+        dateKey,
+        rawDate: lead.created_at,
+        leads: []
+      });
+      groups.push(map.get(dateKey));
+    }
+
+    map.get(dateKey).leads.push(lead);
+  }
+
+  return groups;
+}
+
