@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  UploadCloud, 
-  FileSpreadsheet, 
-  Download, 
-  CheckCircle2, 
-  AlertTriangle, 
-  AlertCircle, 
-  ArrowRight, 
+import {
+  UploadCloud,
+  FileSpreadsheet,
+  Download,
+  CheckCircle2,
+  AlertTriangle,
+  AlertCircle,
+  ArrowRight,
   HelpCircle,
   FileCheck,
   RefreshCw,
@@ -168,7 +168,7 @@ export default function UploadLeadsPage({ onNavigateToLeads }) {
       const res = await leadApi.executeImport({
         rows: previewData.rows,
         columnMapping,
-        defaultAssignedTo: defaultAssignedTo ? parseInt(defaultAssignedTo, 10) : null,
+        defaultAssignedTo: defaultAssignedTo || null,
         defaultCampaignName: defaultCampaignName ? defaultCampaignName.trim() : 'Meta Ads - General',
         fileName: file?.name || 'leads_import.xlsx'
       });
@@ -249,7 +249,7 @@ export default function UploadLeadsPage({ onNavigateToLeads }) {
   const getCompiledSummaryItems = () => {
     if (!importSummary) return [];
     const items = [];
-    
+
     // Add duplicates
     (importSummary.duplicates || []).forEach(d => {
       items.push({
@@ -333,11 +333,10 @@ export default function UploadLeadsPage({ onNavigateToLeads }) {
           <div className="flex p-1 bg-stone-100 rounded-2xl border border-stone-200 text-xs font-semibold">
             <button
               onClick={() => setActiveTab('upload')}
-              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl transition-all cursor-pointer ${
-                activeTab === 'upload'
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl transition-all cursor-pointer ${activeTab === 'upload'
                   ? 'bg-white text-[#2B2B2B] shadow-xs font-bold'
                   : 'text-stone-500 hover:text-stone-800'
-              }`}
+                }`}
             >
               <UploadCloud className="w-3.5 h-3.5 text-[#E8622C]" />
               <span>Upload New File</span>
@@ -345,11 +344,10 @@ export default function UploadLeadsPage({ onNavigateToLeads }) {
 
             <button
               onClick={() => setActiveTab('history')}
-              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl transition-all cursor-pointer ${
-                activeTab === 'history'
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl transition-all cursor-pointer ${activeTab === 'history'
                   ? 'bg-white text-[#2B2B2B] shadow-xs font-bold'
                   : 'text-stone-500 hover:text-stone-800'
-              }`}
+                }`}
             >
               <History className="w-3.5 h-3.5 text-[#D89C2B]" />
               <span>Skipped & Issues Log</span>
@@ -410,11 +408,10 @@ export default function UploadLeadsPage({ onNavigateToLeads }) {
                       <div
                         key={batch.id}
                         onClick={() => handleSelectBatch(batch)}
-                        className={`p-3 rounded-2xl border transition-all cursor-pointer ${
-                          isSelected
+                        className={`p-3 rounded-2xl border transition-all cursor-pointer ${isSelected
                             ? 'bg-amber-50/60 border-[#D89C2B] shadow-xs'
                             : 'bg-stone-50/60 hover:bg-stone-100/80 border-stone-200/80'
-                        }`}
+                          }`}
                       >
                         <div className="flex items-start justify-between gap-2">
                           <div className="font-semibold text-xs text-stone-900 truncate">
@@ -525,25 +522,22 @@ export default function UploadLeadsPage({ onNavigateToLeads }) {
                     <div className="flex items-center gap-1 p-1 bg-stone-100 rounded-xl text-xs font-semibold">
                       <button
                         onClick={() => setIssueFilter('all')}
-                        className={`px-3 py-1 rounded-lg transition-all cursor-pointer ${
-                          issueFilter === 'all' ? 'bg-white text-stone-900 shadow-xs' : 'text-stone-500 hover:text-stone-800'
-                        }`}
+                        className={`px-3 py-1 rounded-lg transition-all cursor-pointer ${issueFilter === 'all' ? 'bg-white text-stone-900 shadow-xs' : 'text-stone-500 hover:text-stone-800'
+                          }`}
                       >
                         All Issues ({batchIssues.length})
                       </button>
                       <button
                         onClick={() => setIssueFilter('duplicate')}
-                        className={`px-3 py-1 rounded-lg transition-all cursor-pointer ${
-                          issueFilter === 'duplicate' ? 'bg-white text-[#D89C2B] shadow-xs' : 'text-stone-500 hover:text-stone-800'
-                        }`}
+                        className={`px-3 py-1 rounded-lg transition-all cursor-pointer ${issueFilter === 'duplicate' ? 'bg-white text-[#D89C2B] shadow-xs' : 'text-stone-500 hover:text-stone-800'
+                          }`}
                       >
                         Duplicates ({batchIssues.filter(i => i.issue_type === 'duplicate').length})
                       </button>
                       <button
                         onClick={() => setIssueFilter('validation_error')}
-                        className={`px-3 py-1 rounded-lg transition-all cursor-pointer ${
-                          issueFilter === 'validation_error' ? 'bg-white text-[#B23A2E] shadow-xs' : 'text-stone-500 hover:text-stone-800'
-                        }`}
+                        className={`px-3 py-1 rounded-lg transition-all cursor-pointer ${issueFilter === 'validation_error' ? 'bg-white text-[#B23A2E] shadow-xs' : 'text-stone-500 hover:text-stone-800'
+                          }`}
                       >
                         Validation Errors ({batchIssues.filter(i => i.issue_type === 'validation_error').length})
                       </button>
@@ -569,8 +563,8 @@ export default function UploadLeadsPage({ onNavigateToLeads }) {
                     <div className="py-12 text-center rounded-2xl border border-dashed border-stone-200 space-y-2">
                       <CheckCircle2 className="w-8 h-8 mx-auto text-[#5C8A3A]" />
                       <div className="text-xs font-bold text-stone-800">
-                        {batchIssues.length === 0 
-                          ? 'Zero Skipped Leads in this Batch' 
+                        {batchIssues.length === 0
+                          ? 'Zero Skipped Leads in this Batch'
                           : 'No matching records found for this filter'}
                       </div>
                       <p className="text-[11px] text-stone-500 max-w-sm mx-auto">
@@ -714,13 +708,12 @@ export default function UploadLeadsPage({ onNavigateToLeads }) {
 
               {/* Stats Badges */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div 
+                <div
                   onClick={() => setIssueFilter('imported')}
-                  className={`p-4 rounded-2xl border transition-all cursor-pointer ${
-                    issueFilter === 'imported'
+                  className={`p-4 rounded-2xl border transition-all cursor-pointer ${issueFilter === 'imported'
                       ? 'bg-emerald-100/70 border-emerald-400 ring-2 ring-emerald-400/30'
                       : 'bg-emerald-50 border-emerald-200 hover:bg-emerald-100/50'
-                  }`}
+                    }`}
                 >
                   <div className="text-xs font-semibold uppercase tracking-wider text-[#5C8A3A] flex items-center justify-between">
                     <span>Successfully Imported</span>
@@ -734,13 +727,12 @@ export default function UploadLeadsPage({ onNavigateToLeads }) {
                   </div>
                 </div>
 
-                <div 
+                <div
                   onClick={() => setIssueFilter('duplicate')}
-                  className={`p-4 rounded-2xl border transition-all cursor-pointer ${
-                    issueFilter === 'duplicate'
+                  className={`p-4 rounded-2xl border transition-all cursor-pointer ${issueFilter === 'duplicate'
                       ? 'bg-amber-100/70 border-amber-400 ring-2 ring-amber-400/30'
                       : 'bg-amber-50 border-amber-200 hover:bg-amber-100/50'
-                  }`}
+                    }`}
                 >
                   <div className="text-xs font-semibold uppercase tracking-wider text-[#D89C2B] flex items-center justify-between">
                     <span>Duplicates Skipped</span>
@@ -754,13 +746,12 @@ export default function UploadLeadsPage({ onNavigateToLeads }) {
                   </div>
                 </div>
 
-                <div 
+                <div
                   onClick={() => setIssueFilter('validation_error')}
-                  className={`p-4 rounded-2xl border transition-all cursor-pointer ${
-                    issueFilter === 'validation_error'
+                  className={`p-4 rounded-2xl border transition-all cursor-pointer ${issueFilter === 'validation_error'
                       ? 'bg-rose-100/70 border-rose-400 ring-2 ring-rose-400/30'
                       : 'bg-rose-50 border-rose-200 hover:bg-rose-100/50'
-                  }`}
+                    }`}
                 >
                   <div className="text-xs font-semibold uppercase tracking-wider text-[#B23A2E] flex items-center justify-between">
                     <span>Validation Errors</span>
@@ -793,33 +784,29 @@ export default function UploadLeadsPage({ onNavigateToLeads }) {
                     <div className="flex items-center gap-1 p-1 bg-stone-100 rounded-xl text-xs font-semibold">
                       <button
                         onClick={() => setIssueFilter('all')}
-                        className={`px-3 py-1 rounded-lg transition-all cursor-pointer ${
-                          issueFilter === 'all' ? 'bg-white text-stone-900 shadow-xs' : 'text-stone-500 hover:text-stone-800'
-                        }`}
+                        className={`px-3 py-1 rounded-lg transition-all cursor-pointer ${issueFilter === 'all' ? 'bg-white text-stone-900 shadow-xs' : 'text-stone-500 hover:text-stone-800'
+                          }`}
                       >
                         All Rows ({summaryItems.length})
                       </button>
                       <button
                         onClick={() => setIssueFilter('duplicate')}
-                        className={`px-3 py-1 rounded-lg transition-all cursor-pointer ${
-                          issueFilter === 'duplicate' ? 'bg-white text-[#D89C2B] shadow-xs' : 'text-stone-500 hover:text-stone-800'
-                        }`}
+                        className={`px-3 py-1 rounded-lg transition-all cursor-pointer ${issueFilter === 'duplicate' ? 'bg-white text-[#D89C2B] shadow-xs' : 'text-stone-500 hover:text-stone-800'
+                          }`}
                       >
                         Duplicates ({importSummary.duplicateCount})
                       </button>
                       <button
                         onClick={() => setIssueFilter('validation_error')}
-                        className={`px-3 py-1 rounded-lg transition-all cursor-pointer ${
-                          issueFilter === 'validation_error' ? 'bg-white text-[#B23A2E] shadow-xs' : 'text-stone-500 hover:text-stone-800'
-                        }`}
+                        className={`px-3 py-1 rounded-lg transition-all cursor-pointer ${issueFilter === 'validation_error' ? 'bg-white text-[#B23A2E] shadow-xs' : 'text-stone-500 hover:text-stone-800'
+                          }`}
                       >
                         Errors ({importSummary.errorCount})
                       </button>
                       <button
                         onClick={() => setIssueFilter('imported')}
-                        className={`px-3 py-1 rounded-lg transition-all cursor-pointer ${
-                          issueFilter === 'imported' ? 'bg-white text-[#5C8A3A] shadow-xs' : 'text-stone-500 hover:text-stone-800'
-                        }`}
+                        className={`px-3 py-1 rounded-lg transition-all cursor-pointer ${issueFilter === 'imported' ? 'bg-white text-[#5C8A3A] shadow-xs' : 'text-stone-500 hover:text-stone-800'
+                          }`}
                       >
                         Imported ({importSummary.importedCount})
                       </button>
@@ -938,13 +925,12 @@ export default function UploadLeadsPage({ onNavigateToLeads }) {
                 onDragLeave={handleDrag}
                 onDragOver={handleDrag}
                 onDrop={handleDrop}
-                className={`relative p-8 sm:p-12 border-2 border-dashed rounded-3xl text-center transition-all bg-white ${
-                  dragActive
+                className={`relative p-8 sm:p-12 border-2 border-dashed rounded-3xl text-center transition-all bg-white ${dragActive
                     ? 'border-[#E8622C] bg-[#E8622C]/5 scale-[1.01]'
                     : file
-                    ? 'border-emerald-400 bg-emerald-50/20'
-                    : 'border-stone-300 hover:border-[#E8622C]/60'
-                }`}
+                      ? 'border-emerald-400 bg-emerald-50/20'
+                      : 'border-stone-300 hover:border-[#E8622C]/60'
+                  }`}
               >
                 <input
                   type="file"
@@ -955,9 +941,8 @@ export default function UploadLeadsPage({ onNavigateToLeads }) {
                 />
 
                 <div className="flex flex-col items-center justify-center">
-                  <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-4 transition-transform ${
-                    file ? 'bg-emerald-100 text-[#5C8A3A]' : 'bg-[#E8622C]/10 text-[#E8622C]'
-                  }`}>
+                  <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-4 transition-transform ${file ? 'bg-emerald-100 text-[#5C8A3A]' : 'bg-[#E8622C]/10 text-[#E8622C]'
+                    }`}>
                     {file ? <FileCheck className="w-8 h-8" /> : <UploadCloud className="w-8 h-8" />}
                   </div>
 
@@ -1114,8 +1099,8 @@ export default function UploadLeadsPage({ onNavigateToLeads }) {
                     >
                       <FileSpreadsheet className="w-4 h-4" />
                       <span>
-                        {importing 
-                          ? 'Importing & Validating...' 
+                        {importing
+                          ? 'Importing & Validating...'
                           : `Import ${previewData.totalRows} Leads`}
                       </span>
                     </button>

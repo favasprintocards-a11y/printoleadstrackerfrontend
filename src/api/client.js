@@ -1,4 +1,4 @@
-const API_BASE = '/api';
+const API_BASE = import.meta.env.VITE_API_URL || '/api';
 
 /**
  * Helper to get the saved auth token
@@ -124,10 +124,10 @@ export const leadApi = {
   bulkAssign: (lead_ids, assigned_to_users, mode = 'distribute') =>
     apiRequest('/leads/bulk-assign', {
       method: 'POST',
-      body: JSON.stringify({ 
-        lead_ids, 
-        assigned_to_users: Array.isArray(assigned_to_users) ? assigned_to_users : [assigned_to_users], 
-        mode 
+      body: JSON.stringify({
+        lead_ids,
+        assigned_to_users: Array.isArray(assigned_to_users) ? assigned_to_users : [assigned_to_users],
+        mode
       })
     }),
   bulkStatus: (lead_ids, status, note) =>

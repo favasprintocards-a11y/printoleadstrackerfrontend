@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Users, 
-  UserPlus, 
-  Key, 
-  Power, 
-  Edit, 
-  ShieldCheck, 
-  Phone, 
-  Mail, 
-  Calendar, 
-  CheckCircle2, 
-  X, 
-  Save, 
+import {
+  Users,
+  UserPlus,
+  Key,
+  Power,
+  Edit,
+  ShieldCheck,
+  Phone,
+  Mail,
+  Calendar,
+  CheckCircle2,
+  X,
+  Save,
   AlertCircle,
   AlertTriangle,
   Trash2,
@@ -170,7 +170,7 @@ export default function UsersPage({ onNavigateToLeads }) {
     try {
       setDeleting(true);
       setDeleteError('');
-      await userApi.deleteUser(deleteModalUser.id, reassignToUserId ? parseInt(reassignToUserId, 10) : null);
+      await userApi.deleteUser(deleteModalUser.id, reassignToUserId || null);
       setDeleteModalUser(null);
       setReassignToUserId('');
       fetchUsers();
@@ -226,18 +226,16 @@ export default function UsersPage({ onNavigateToLeads }) {
             return (
               <div
                 key={u.id}
-                className={`bg-white rounded-3xl border p-5 shadow-xs transition-all ${
-                  u.is_active ? 'border-[#E2DDD6]' : 'border-[#E2DDD6] bg-[#FAF8F5]/60 opacity-80'
-                }`}
+                className={`bg-white rounded-3xl border p-5 shadow-xs transition-all ${u.is_active ? 'border-[#E2DDD6]' : 'border-[#E2DDD6] bg-[#FAF8F5]/60 opacity-80'
+                  }`}
               >
                 {/* User Header */}
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex items-center gap-3">
-                    <div className={`w-11 h-11 rounded-2xl flex items-center justify-center font-black text-sm ${
-                      u.role === 'admin'
+                    <div className={`w-11 h-11 rounded-2xl flex items-center justify-center font-black text-sm ${u.role === 'admin'
                         ? 'bg-[#2B2B2B] text-white'
                         : 'bg-[#FDF1EB] text-[#E8622C] border border-[#F8DCD0]'
-                    }`}>
+                      }`}>
                       {u.name.charAt(0).toUpperCase()}
                     </div>
                     <div>
@@ -256,11 +254,10 @@ export default function UsersPage({ onNavigateToLeads }) {
                     </div>
                   </div>
 
-                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase border ${
-                    u.is_active
+                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase border ${u.is_active
                       ? 'bg-[#F0F6EB] text-[#5C8A3A] border-[#D3E5C7]'
                       : 'bg-[#FBF0EF] text-[#B23A2E] border-[#E8BDB8]'
-                  }`}>
+                    }`}>
                     {u.is_active ? 'Active' : 'Inactive'}
                   </span>
                 </div>
@@ -341,11 +338,10 @@ export default function UsersPage({ onNavigateToLeads }) {
                   {!isSelf && (
                     <button
                       onClick={() => handleToggleStatus(u)}
-                      className={`flex items-center gap-1 px-3 py-1.5 rounded-xl text-[11px] font-semibold transition-colors cursor-pointer ${
-                        u.is_active
+                      className={`flex items-center gap-1 px-3 py-1.5 rounded-xl text-[11px] font-semibold transition-colors cursor-pointer ${u.is_active
                           ? 'text-[#B23A2E] hover:bg-[#FBF0EF] border border-[#E8BDB8]'
                           : 'text-[#5C8A3A] hover:bg-[#F0F6EB] border border-[#D3E5C7]'
-                      }`}
+                        }`}
                     >
                       <Power className="w-3.5 h-3.5" />
                       <span>{u.is_active ? 'Deactivate' : 'Activate'}</span>

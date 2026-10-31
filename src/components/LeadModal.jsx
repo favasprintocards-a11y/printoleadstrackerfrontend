@@ -59,9 +59,9 @@ export default function LeadModal({
     if (initialData) {
       let initialUserIds = [];
       if (initialData.assigned_user_ids) {
-        initialUserIds = String(initialData.assigned_user_ids).split(',').map(id => parseInt(id, 10)).filter(Boolean);
+        initialUserIds = String(initialData.assigned_user_ids).split(',').map(id => id.trim()).filter(Boolean);
       } else if (initialData.assigned_to) {
-        initialUserIds = [parseInt(initialData.assigned_to, 10)];
+        initialUserIds = [String(initialData.assigned_to)];
       }
 
       setFormData({
@@ -411,11 +411,10 @@ export default function LeadModal({
                         type="button"
                         key={u.id}
                         onClick={() => toggleUserAssignment(u.id)}
-                        className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
-                          isSelected
+                        className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${isSelected
                             ? 'bg-[#E8622C] text-white shadow-xs'
                             : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-100'
-                        }`}
+                          }`}
                       >
                         <span className={`w-2 h-2 rounded-full ${isSelected ? 'bg-white' : 'bg-slate-400'}`} />
                         <span>{u.name}</span>
