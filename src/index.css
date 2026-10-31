@@ -1,0 +1,172 @@
+@import "tailwindcss";
+
+@theme {
+  --color-printo-primary: #E8622C;
+  --color-printo-orange: #E8622C;
+  --color-printo-orange-hover: #D0521F;
+  --color-printo-orange-light: #FDF1EB;
+  --color-printo-orange-border: #F8DCD0;
+
+  --color-printo-charcoal: #2B2B2B;
+  --color-printo-deepcharcoal: #1A1A1A;
+
+  --color-printo-green: #A8C93C;
+  --color-printo-green-hover: #97B634;
+  --color-printo-green-light: #F4F8E8;
+  --color-printo-green-border: #D6E6B0;
+
+  --color-printo-offwhite: #FAF8F5;
+  --color-printo-warmgray: #8C8782;
+  --color-printo-warmgray-light: #EBE8E3;
+  --color-printo-warmgray-border: #E2DDD6;
+
+  --color-printo-success: #5C8A3A;
+  --color-printo-success-light: #F0F6EB;
+  --color-printo-success-border: #D3E5C7;
+
+  --color-printo-amber: #D89C2B;
+  --color-printo-amber-light: #FDF7EA;
+  --color-printo-amber-border: #F6E2B6;
+
+  --color-printo-brick: #B23A2E;
+  --color-printo-brick-light: #FBF0EF;
+  --color-printo-brick-border: #E8BDB8;
+
+  /* Theme mappings for Printo Brand Colors */
+  --color-indigo-50: #FDF1EB;
+  --color-indigo-100: #FCE4D8;
+  --color-indigo-200: #F8DCD0;
+  --color-indigo-300: #F1B59C;
+  --color-indigo-400: #EB875E;
+  --color-indigo-500: #E8622C;
+  --color-indigo-600: #E8622C;
+  --color-indigo-700: #D0521F;
+  --color-indigo-800: #B84417;
+  --color-indigo-900: #2B2B2B;
+  --color-indigo-950: #1A1A1A;
+
+  --color-emerald-50: #F0F6EB;
+  --color-emerald-100: #E1EED7;
+  --color-emerald-200: #D3E5C7;
+  --color-emerald-500: #5C8A3A;
+  --color-emerald-600: #5C8A3A;
+  --color-emerald-700: #4A712D;
+
+  --color-amber-50: #FDF7EA;
+  --color-amber-100: #F9ECCB;
+  --color-amber-200: #F6E2B6;
+  --color-amber-500: #D89C2B;
+  --color-amber-600: #D89C2B;
+  --color-amber-700: #B9801C;
+
+  --color-rose-50: #FBF0EF;
+  --color-rose-100: #F7DCDA;
+  --color-rose-200: #E8BDB8;
+  --color-rose-500: #B23A2E;
+  --color-rose-600: #B23A2E;
+  /* Font Family - Titillium Web */
+  --font-sans: 'Titillium Web', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-weight-black: 600;
+  --font-weight-extrabold: 600;
+  --font-weight-bold: 600;
+  --font-weight-semibold: 500;
+  --font-weight-medium: 400;
+  --font-weight-normal: 400;
+  --font-weight-light: 300;
+}
+
+@layer base {
+  :root {
+    --primary: #E8622C;
+    --primary-hover: #D0521F;
+    --primary-light: #FDF1EB;
+    --secondary: #2B2B2B;
+    --accent: #A8C93C;
+    --bg-light: #FAF8F5;
+    --bg-dark: #1A1A1A;
+    --neutral-warm: #8C8782;
+    --success: #5C8A3A;
+    --warning: #D89C2B;
+    --error: #B23A2E;
+  }
+  
+  body, html {
+    background-color: #FAF8F5;
+    color: #2B2B2B;
+    font-family: 'Titillium Web', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    letter-spacing: 0.005em;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  /* Global Softening for Titillium Web: eliminates chunky heavy weights */
+  .font-black,
+  .font-extrabold {
+    font-weight: 600 !important;
+  }
+
+  .font-bold {
+    font-weight: 600 !important;
+  }
+
+  .font-semibold {
+    font-weight: 500 !important;
+  }
+
+  b, strong {
+    font-weight: 600 !important;
+  }
+
+  th {
+    font-weight: 500 !important;
+  }
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #FAF8F5;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #E2DDD6;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #8C8782;
+}
+
+/* Glassmorphism helpers */
+.glass-panel {
+  background: rgba(250, 248, 245, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid #E2DDD6;
+}
+
+.glass-card {
+  background: #FFFFFF;
+  backdrop-filter: blur(8px);
+  border: 1px solid #E2DDD6;
+}
+
+/* Pulse badge animation */
+@keyframes subtle-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.85; transform: scale(1.03); }
+}
+
+.pulse-urgent {
+  animation: subtle-pulse 2s infinite ease-in-out;
+}
