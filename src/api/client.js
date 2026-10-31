@@ -201,6 +201,22 @@ export const leadApi = {
     a.download = `leads_export_${new Date().toISOString().split('T')[0]}.xlsx`;
     a.click();
     window.URL.revokeObjectURL(url);
+  },
+
+  downloadSalespersonReport: async (params = {}) => {
+    const query = new URLSearchParams();
+    Object.entries(params).forEach(([k, v]) => {
+      if (v !== undefined && v !== null && v !== '') {
+        query.append(k, v);
+      }
+    });
+    const blob = await apiRequest(`/leads/report/salesperson?${query.toString()}`, { isBlob: true });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `salesperson_report_${new Date().toISOString().split('T')[0]}.xlsx`;
+    a.click();
+    window.URL.revokeObjectURL(url);
   }
 };
 

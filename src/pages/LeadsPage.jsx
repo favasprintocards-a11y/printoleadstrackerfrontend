@@ -275,6 +275,24 @@ export default function LeadsPage({ initialFilter = {}, openAddModalTrigger = 0 
     });
   };
 
+  // Download salesperson-wise report
+  const [reportDownloading, setReportDownloading] = React.useState(false);
+  const handleSalespersonReport = async () => {
+    setReportDownloading(true);
+    try {
+      await leadApi.downloadSalespersonReport({
+        date_from: dateFrom,
+        date_to: dateTo,
+        campaign: campaignFilter !== 'all' ? campaignFilter : '',
+        status: statusFilter !== 'all' ? statusFilter : ''
+      });
+    } catch (err) {
+      alert('Failed to download report: ' + (err.message || 'Unknown error'));
+    } finally {
+      setReportDownloading(false);
+    }
+  };
+
   const isAllSelected = leads.length > 0 && selectedIds.length === leads.length;
   const totalLeads = total || leads.length;
 
@@ -310,6 +328,17 @@ export default function LeadsPage({ initialFilter = {}, openAddModalTrigger = 0 
               >
                 <Download className="w-3.5 h-3.5 text-slate-500" />
                 <span className="hidden sm:inline">Export</span>
+              </button>
+
+              {/* Salesperson Report Button */}
+              <button
+                onClick={handleSalespersonReport}
+                disabled={reportDownloading}
+                title="Download leads grouped by salesperson as Excel"
+                className="flex items-center gap-1.5 px-3 py-1.5 border border-[#E8622C]/40 bg-[#FDF8F5] hover:bg-[#E8622C]/10 text-[#E8622C] rounded-xl text-xs font-semibold transition-all cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+              >
+                <Download className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">{reportDownloading ? 'Preparing…' : 'Rep Report'}</span>
               </button>
               <button
                 onClick={() => {
