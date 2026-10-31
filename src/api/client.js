@@ -1,4 +1,10 @@
-const API_BASE = import.meta.env.VITE_API_URL || '/api';
+const rawApiUrl = (import.meta.env.VITE_API_URL || '').trim();
+let API_BASE = '/api';
+
+if (rawApiUrl) {
+  const cleanUrl = rawApiUrl.replace(/\/+$/, '');
+  API_BASE = cleanUrl.endsWith('/api') ? cleanUrl : `${cleanUrl}/api`;
+}
 
 /**
  * Helper to get the saved auth token
