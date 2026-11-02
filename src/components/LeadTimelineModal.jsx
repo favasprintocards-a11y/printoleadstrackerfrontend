@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   X, 
   Phone, 
@@ -50,6 +50,12 @@ export default function LeadTimelineModal({
   const [followUpDate, setFollowUpDate] = useState('');
   const [note, setNote] = useState('');
   const [updating, setUpdating] = useState(false);
+  const [initialState, setInitialState] = useState({ status: '', followUpDate: '' });
+
+  const stateRef = useRef({ newStatus, followUpDate, note, initialState, updating, leadId, lead: data?.lead });
+  useEffect(() => {
+    stateRef.current = { newStatus, followUpDate, note, initialState, updating, leadId, lead: data?.lead };
+  }, [newStatus, followUpDate, note, initialState, updating, leadId, data]);
 
   useEffect(() => {
     if (isOpen && leadId) {
@@ -66,8 +72,10 @@ export default function LeadTimelineModal({
       setError('');
       const res = await leadApi.getLead(leadId);
       setData(res);
+      const rawDate = res.lead.follow_up_date ? res.lead.follow_up_date.split('T')[0] : '';
       setNewStatus(res.lead.status);
-      setFollowUpDate(res.lead.follow_up_date ? res.lead.follow_up_date.split('T')[0] : '');
+      setFollowUpDate(rawDate);
+      setInitialState({ status: res.lead.status, followUpDate: rawDate });
       setNote('');
     } catch (err) {
       setError(err.message || 'Failed to load lead details.');
@@ -76,27 +84,57 @@ export default function LeadTimelineModal({
     }
   };
 
-  const handleAddActivity = async (e) => {
-    e.preventDefault();
-    if (!newStatus) return;
+  const isDirty = () => {
+    const s = stateRef.current;
+    if (!s.lead) return false;
+    const statusChanged = s.newStatus && s.newStatus !== s.initialState.status;
+    const followUpChanged = (s.followUpDate || '') !== (s.initialState.followUpDate || '');
+    const hasNote = s.note && s.note.trim().length > 0;
+    return statusChanged || followUpChanged || hasNote;
+  };
 
-    try {
-      setUpdating(true);
-      await leadApi.addActivity(leadId, {
-        status: newStatus,
-        follow_up_date: followUpDate || null,
-        note: note.trim() || `Status updated to ${newStatus}`
-      });
+  const handleClose = async () => {
+    const s = stateRef.current;
+    if (isDirty() && !s.updating && s.leadId) {
+      try {
+        setUpdating(true);
+        let noteText = (s.note || '').trim();
+        if (!noteText) {
+          if (s.newStatus !== s.initialState.status) {
+            noteText = `Status updated to ${s.newStatus}`;
+          } else if (s.followUpDate !== s.initialState.followUpDate) {
+            noteText = `Follow-up date set to ${s.followUpDate || 'None'}`;
+          } else {
+            noteText = `Updated lead status to ${s.newStatus}`;
+          }
+        }
 
-      setNote('');
-      await loadLeadDetails();
-      if (onLeadUpdated) onLeadUpdated();
-    } catch (err) {
-      setError(err.message || 'Failed to record activity.');
-    } finally {
-      setUpdating(false);
+        await leadApi.addActivity(s.leadId, {
+          status: s.newStatus,
+          follow_up_date: s.followUpDate || null,
+          note: noteText
+        });
+        if (onLeadUpdated) onLeadUpdated();
+      } catch (err) {
+        console.error('Failed to autosave lead status on close:', err);
+      } finally {
+        setUpdating(false);
+        onClose();
+      }
+    } else {
+      onClose();
     }
   };
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        handleClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -105,8 +143,14 @@ export default function LeadTimelineModal({
   const followUpInfo = lead ? getFollowUpStatus(lead.follow_up_date, lead.status) : null;
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-2 sm:p-4">
-      <div className="relative w-full max-w-3xl bg-white rounded-2xl sm:rounded-3xl shadow-2xl border border-slate-100 overflow-hidden flex flex-col max-h-[92dvh]">
+    <div
+      className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-2 sm:p-4"
+      onClick={handleClose}
+    >
+      <div
+        className="relative w-full max-w-3xl bg-white rounded-2xl sm:rounded-3xl shadow-2xl border border-slate-100 overflow-hidden flex flex-col max-h-[92dvh]"
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* Header */}
         <div className="px-4 py-3 sm:px-6 sm:py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/70">
           <div className="flex items-center gap-3">
@@ -124,8 +168,9 @@ export default function LeadTimelineModal({
             </div>
           </div>
           <button
-            onClick={onClose}
+            onClick={handleClose}
             className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-200/50 rounded-xl transition-colors cursor-pointer shrink-0"
+            title="Close (auto-saves changes)"
           >
             <X className="w-5 h-5" />
           </button>
@@ -231,16 +276,22 @@ export default function LeadTimelineModal({
 
               {/* Status Update & Note Action Bar */}
               <div className="p-4 bg-slate-50 border border-slate-200/80 rounded-2xl">
-                <div className="text-xs font-bold text-slate-800 mb-3 flex items-center gap-2">
-                  <Clock className="w-4 h-4 text-[#E8622C]" />
-                  <span>Log Activity / Update Status</span>
+                <div className="flex items-center justify-between mb-3">
+                  <div className="text-xs font-bold text-slate-800 flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-[#E8622C]" />
+                    <span>Update Status & Notes</span>
+                  </div>
+                  <span className="text-[11px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200/80 px-2.5 py-0.5 rounded-full flex items-center gap-1.5 shadow-2xs">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                    Auto-saves on close
+                  </span>
                 </div>
 
-                <form onSubmit={handleAddActivity} className="space-y-3">
+                <div className="space-y-3">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                        New Status
+                        Lead Status
                       </label>
                       <select
                         value={newStatus}
@@ -270,25 +321,15 @@ export default function LeadTimelineModal({
                     <label className="block text-[11px] font-semibold text-slate-600 mb-1">
                       Conversation Remarks / Activity Note
                     </label>
-                    <div className="flex gap-2">
-                      <input
-                        type="text"
-                        placeholder="e.g. Called client, shared product catalog via WhatsApp..."
-                        value={note}
-                        onChange={(e) => setNote(e.target.value)}
-                        className="flex-1 min-h-[42px] px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#E8622C]/20 focus:border-[#E8622C]"
-                      />
-                      <button
-                        type="submit"
-                        disabled={updating}
-                        className="min-h-[42px] px-4 py-2 bg-[#E8622C] hover:bg-[#D0521F] text-white rounded-xl text-xs font-semibold shadow-xs flex items-center justify-center gap-1.5 disabled:opacity-50 cursor-pointer shrink-0 transition-all"
-                      >
-                        <Send className="w-3.5 h-3.5" />
-                        <span>{updating ? 'Saving...' : 'Post'}</span>
-                      </button>
-                    </div>
+                    <input
+                      type="text"
+                      placeholder="e.g. Called client, shared product catalog via WhatsApp..."
+                      value={note}
+                      onChange={(e) => setNote(e.target.value)}
+                      className="w-full min-h-[42px] px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#E8622C]/20 focus:border-[#E8622C]"
+                    />
                   </div>
-                </form>
+                </div>
               </div>
 
               {/* Activity History Timeline */}
@@ -346,12 +387,27 @@ export default function LeadTimelineModal({
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-3 border-t border-slate-100 bg-slate-50/50 flex justify-end">
+        <div className="px-6 py-3 border-t border-slate-100 bg-slate-50/50 flex items-center justify-between">
+          <div className="text-xs">
+            {updating ? (
+              <span className="text-[#E8622C] font-semibold flex items-center gap-1.5">
+                <Clock className="w-3.5 h-3.5 animate-spin" /> Saving updates...
+              </span>
+            ) : isDirty() ? (
+              <span className="text-amber-600 font-medium flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+                Changes ready (auto-saves on close)
+              </span>
+            ) : (
+              <span className="text-slate-400">All changes saved</span>
+            )}
+          </div>
           <button
-            onClick={onClose}
-            className="px-4 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl text-xs font-semibold transition-colors cursor-pointer"
+            onClick={handleClose}
+            disabled={updating}
+            className="px-5 py-2 bg-[#E8622C] hover:bg-[#D0521F] text-white rounded-xl text-xs font-semibold shadow-xs transition-all cursor-pointer disabled:opacity-50"
           >
-            Close
+            {updating ? 'Saving...' : 'Close & Save'}
           </button>
         </div>
       </div>
