@@ -861,17 +861,19 @@ export default function LeadsPage({ initialFilter = {}, openAddModalTrigger = 0 
                         <Clock className="w-4 h-4" />
                       </button>
 
-                      {/* Edit Lead */}
-                      <button
-                        onClick={() => {
-                          setEditingLead(lead);
-                          setIsAddModalOpen(true);
-                        }}
-                        title="Edit lead"
-                        className="min-h-[42px] w-10 flex items-center justify-center bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl transition-colors cursor-pointer shrink-0"
-                      >
-                        <Edit className="w-4 h-4" />
-                      </button>
+                      {/* Edit Lead (Admin only) */}
+                      {isAdmin && (
+                        <button
+                          onClick={() => {
+                            setEditingLead(lead);
+                            setIsAddModalOpen(true);
+                          }}
+                          title="Edit lead"
+                          className="min-h-[42px] w-10 flex items-center justify-center bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl transition-colors cursor-pointer shrink-0"
+                        >
+                          <Edit className="w-4 h-4" />
+                        </button>
+                      )}
 
                       {/* Delete Lead (Admin only) */}
                       {isAdmin && (
@@ -1207,17 +1209,19 @@ export default function LeadsPage({ initialFilter = {}, openAddModalTrigger = 0 
                                   <Clock className="w-4 h-4" />
                                 </button>
 
-                                {/* Edit Lead */}
-                                <button
-                                  onClick={() => {
-                                    setEditingLead(lead);
-                                    setIsAddModalOpen(true);
-                                  }}
-                                  title="Edit details"
-                                  className="p-1.5 text-slate-500 hover:text-[#E8622C] hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
-                                >
-                                  <Edit className="w-4 h-4" />
-                                </button>
+                                {/* Edit Lead (Admin only) */}
+                                {isAdmin && (
+                                  <button
+                                    onClick={() => {
+                                      setEditingLead(lead);
+                                      setIsAddModalOpen(true);
+                                    }}
+                                    title="Edit details"
+                                    className="p-1.5 text-slate-500 hover:text-[#E8622C] hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
+                                  >
+                                    <Edit className="w-4 h-4" />
+                                  </button>
+                                )}
 
                                 {/* Delete Lead (Admin only) */}
                                 {isAdmin && (
