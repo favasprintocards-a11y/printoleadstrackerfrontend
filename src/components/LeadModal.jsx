@@ -322,9 +322,8 @@ export default function LeadModal({
                   placeholder="e.g. Meta Ads - Corporate NFC"
                   value={formData.campaign_name}
                   onChange={(e) => setFormData({ ...formData, campaign_name: e.target.value })}
-                  disabled={isEdit && !isAdmin}
                   list="campaign-suggestions"
-                  className="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#E8622C]/20 focus:border-[#E8622C] disabled:opacity-75"
+                  className="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#E8622C]/20 focus:border-[#E8622C]"
                 />
                 <datalist id="campaign-suggestions">
                   <option value="Meta Ads - Corporate NFC" />

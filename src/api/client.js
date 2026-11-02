@@ -146,6 +146,11 @@ export const leadApi = {
       method: 'POST',
       body: JSON.stringify({ lead_ids, campaign_name })
     }),
+  renameCampaign: (old_campaign, new_campaign) =>
+    apiRequest('/leads/campaign/rename', {
+      method: 'POST',
+      body: JSON.stringify({ old_campaign, new_campaign })
+    }),
   getCampaigns: () => apiRequest('/leads/meta/campaigns'),
   bulkDelete: (lead_ids) =>
     apiRequest('/leads/bulk-delete', {

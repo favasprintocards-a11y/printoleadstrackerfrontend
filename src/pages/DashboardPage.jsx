@@ -18,7 +18,8 @@ import {
   Award,
   Target,
   LayoutGrid,
-  Table
+  Table,
+  Edit
 } from 'lucide-react';
 import { dashboardApi, leadApi } from '../api/client';
 import { useAuth } from '../context/AuthContext';
@@ -63,6 +64,22 @@ export default function DashboardPage({ onNavigateToLeads }) {
       setError(err.message || 'Failed to fetch dashboard metrics.');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleRenameCampaign = async (oldName, e) => {
+    e.stopPropagation();
+    const newName = window.prompt(`Rename campaign "${oldName}" to:`, oldName);
+    if (!newName || !newName.trim() || newName.trim() === oldName) return;
+
+    try {
+      const res = await leadApi.renameCampaign(oldName, newName.trim());
+      alert(res.message || 'Campaign renamed successfully.');
+      const updatedCampaign = selectedCampaign === oldName ? newName.trim() : selectedCampaign;
+      setSelectedCampaign(updatedCampaign);
+      fetchDashboardData(updatedCampaign);
+    } catch (err) {
+      alert(err.message || 'Failed to rename campaign.');
     }
   };
 
@@ -1131,9 +1148,21 @@ export default function DashboardPage({ onNavigateToLeads }) {
                       }`}
                     >
                       <div className="flex items-center justify-between text-xs">
-                        <span className={`font-bold truncate max-w-[180px] ${isSelected ? 'text-[#E8622C]' : 'text-[#2B2B2B] group-hover:text-[#E8622C]'}`}>
-                          {cb.campaign}
-                        </span>
+                        <div className="flex items-center gap-1.5 min-w-0 pr-2">
+                          <span className={`font-bold truncate max-w-[170px] ${isSelected ? 'text-[#E8622C]' : 'text-[#2B2B2B] group-hover:text-[#E8622C]'}`}>
+                            {cb.campaign}
+                          </span>
+                          {isAdmin && (
+                            <button
+                              type="button"
+                              onClick={(e) => handleRenameCampaign(cb.campaign, e)}
+                              title={`Rename "${cb.campaign}" globally`}
+                              className="p-1 rounded-md text-slate-400 hover:text-[#E8622C] hover:bg-white/90 transition-colors shrink-0"
+                            >
+                              <Edit className="w-3 h-3" />
+                            </button>
+                          )}
+                        </div>
                         <div className="flex items-center gap-1.5 shrink-0">
                           <span className={`text-[11px] font-bold px-2 py-0.5 rounded-md border shadow-2xs ${
                             isSelected ? 'bg-[#E8622C] text-white border-[#E8622C]' : 'bg-white text-[#E8622C] border-[#E8622C]/20'
