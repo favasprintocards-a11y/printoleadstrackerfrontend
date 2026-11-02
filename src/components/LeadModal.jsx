@@ -49,7 +49,7 @@ export default function LeadModal({
             setCampaignList(names);
           }
         })
-        .catch(() => {});
+        .catch(() => { });
     }
   }, [availableCampaigns]);
 
@@ -373,11 +373,10 @@ export default function LeadModal({
                           key={camp}
                           type="button"
                           onClick={() => setFormData(prev => ({ ...prev, campaign_name: camp }))}
-                          className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5 ${
-                            isSelected
+                          className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5 ${isSelected
                               ? 'bg-[#E8622C] text-white shadow-2xs'
                               : 'bg-white text-slate-700 hover:bg-[#FDF8F5] hover:text-[#E8622C] border border-slate-200'
-                          }`}
+                            }`}
                         >
                           <Megaphone className={`w-2.5 h-2.5 ${isSelected ? 'text-white' : 'text-[#E8622C]'}`} />
                           <span>{camp}</span>
