@@ -343,8 +343,8 @@ export default function LeadsPage({ initialFilter = {}, openAddModalTrigger = 0 
               <button
                 onClick={() => handleExport(false)}
                 className={`flex items-center gap-1.5 px-3 py-1.5 border rounded-xl text-xs font-semibold transition-all cursor-pointer ${selectedIds.length > 0
-                    ? 'border-[#E8622C] bg-[#E8622C]/10 text-[#E8622C]'
-                    : 'border-slate-200 hover:bg-slate-50 text-slate-700'
+                  ? 'border-[#E8622C] bg-[#E8622C]/10 text-[#E8622C]'
+                  : 'border-slate-200 hover:bg-slate-50 text-slate-700'
                   }`}
                 title={selectedIds.length > 0 ? `Export ${selectedIds.length} selected leads to Excel` : 'Export all leads matching filters'}
               >
