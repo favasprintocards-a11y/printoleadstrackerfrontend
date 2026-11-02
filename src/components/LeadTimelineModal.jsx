@@ -1,27 +1,27 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { 
-  X, 
-  Phone, 
-  MessageSquare, 
-  Mail, 
-  Building, 
-  MapPin, 
-  Calendar, 
-  Clock, 
-  Send, 
-  User, 
+import {
+  X,
+  Phone,
+  MessageSquare,
+  Mail,
+  Building,
+  MapPin,
+  Calendar,
+  Clock,
+  Send,
+  User,
   ArrowRight,
   CheckCircle2,
   AlertCircle
 } from 'lucide-react';
 import { leadApi } from '../api/client';
 import StatusBadge from './StatusBadge';
-import { 
-  formatDateTime, 
-  formatDate, 
-  getCallUrl, 
-  getWhatsAppUrl, 
-  getFollowUpStatus 
+import {
+  formatDateTime,
+  formatDate,
+  getCallUrl,
+  getWhatsAppUrl,
+  getFollowUpStatus
 } from '../utils/formatters';
 
 const STATUS_OPTIONS = [
