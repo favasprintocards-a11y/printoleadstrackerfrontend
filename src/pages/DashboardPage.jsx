@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Users, 
-  CheckCircle2, 
-  Calendar, 
-  AlertTriangle, 
-  TrendingUp, 
-  ArrowRight, 
-  Phone, 
-  MessageSquare, 
-  Clock, 
-  Sparkles, 
-  BarChart2, 
-  RefreshCw, 
+import {
+  Users,
+  CheckCircle2,
+  Calendar,
+  AlertTriangle,
+  TrendingUp,
+  ArrowRight,
+  Phone,
+  MessageSquare,
+  Clock,
+  Sparkles,
+  BarChart2,
+  RefreshCw,
   Megaphone,
   Layers,
   Trophy,
@@ -113,21 +113,21 @@ export default function DashboardPage({ onNavigateToLeads }) {
   const recentActivities = data?.recentActivities || [];
   const overallTotal = data?.overallTotalLeads || summary.totalLeads || 0;
 
-  const selectedCampaignInfo = selectedCampaign === 'all' 
+  const selectedCampaignInfo = selectedCampaign === 'all'
     ? {
-        name: 'All Campaigns',
-        total: summary.totalLeads ?? 0,
-        won: summary.wonCount ?? 0,
-        lost: summary.lostCount ?? 0,
-        pipeline: (statusMap['Interested'] || 0) + (statusMap['Quotation Sent'] || 0) + (statusMap['Follow-up'] || 0)
-      }
+      name: 'All Campaigns',
+      total: summary.totalLeads ?? 0,
+      won: summary.wonCount ?? 0,
+      lost: summary.lostCount ?? 0,
+      pipeline: (statusMap['Interested'] || 0) + (statusMap['Quotation Sent'] || 0) + (statusMap['Follow-up'] || 0)
+    }
     : campaignBreakdown.find(cb => cb.campaign === selectedCampaign) || {
-        name: selectedCampaign,
-        total: summary.totalLeads || campaignLeadsPagination.total || campaignLeads.length || 0,
-        won: summary.wonCount || 0,
-        lost: summary.lostCount || 0,
-        pipeline: (statusMap['Interested'] || 0) + (statusMap['Quotation Sent'] || 0) + (statusMap['Follow-up'] || 0)
-      };
+      name: selectedCampaign,
+      total: summary.totalLeads || campaignLeadsPagination.total || campaignLeads.length || 0,
+      won: summary.wonCount || 0,
+      lost: summary.lostCount || 0,
+      pipeline: (statusMap['Interested'] || 0) + (statusMap['Quotation Sent'] || 0) + (statusMap['Follow-up'] || 0)
+    };
 
   return (
     <div className="space-y-6">
@@ -144,8 +144,8 @@ export default function DashboardPage({ onNavigateToLeads }) {
             {isAdmin ? 'System Lead Analytics & Performance' : 'My Sales Workspace'}
           </h2>
           <p className="text-xs sm:text-sm text-[#EBE8E3] mt-1">
-            {isAdmin 
-              ? 'Track campaigns, manage sales pipeline conversions, and assign incoming leads.' 
+            {isAdmin
+              ? 'Track campaigns, manage sales pipeline conversions, and assign incoming leads.'
               : 'Review your scheduled calls, follow-ups, and customer inquiries for today.'}
           </p>
         </div>
@@ -192,7 +192,7 @@ export default function DashboardPage({ onNavigateToLeads }) {
                 )}
               </div>
               <p className="text-xs text-[#8C8782] mt-0.5">
-                {selectedCampaign !== 'all' 
+                {selectedCampaign !== 'all'
                   ? `All dashboard KPI metrics, pipeline stages, urgent follow-ups, and sales rep figures below are filtered specifically for "${selectedCampaign}".`
                   : 'Viewing aggregate numbers across all active Meta Ads campaigns. Click any campaign below to filter the entire dashboard.'}
               </p>
@@ -215,17 +215,15 @@ export default function DashboardPage({ onNavigateToLeads }) {
         <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 pt-1 -mx-1 px-1">
           <button
             onClick={() => setSelectedCampaign('all')}
-            className={`px-3.5 py-2 rounded-2xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer flex items-center gap-2 shrink-0 ${
-              selectedCampaign === 'all'
+            className={`px-3.5 py-2 rounded-2xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer flex items-center gap-2 shrink-0 ${selectedCampaign === 'all'
                 ? 'bg-[#E8622C] text-white shadow-sm shadow-[#E8622C]/30 scale-[1.02]'
                 : 'bg-[#FAF8F5] text-[#2B2B2B] hover:bg-[#EBE8E3] border border-[#E2DDD6]'
-            }`}
+              }`}
           >
             <Layers className="w-3.5 h-3.5" />
             <span>All Campaigns</span>
-            <span className={`text-[10px] px-2 py-0.5 rounded-full font-extrabold ${
-              selectedCampaign === 'all' ? 'bg-white/20 text-white' : 'bg-white text-[#8C8782] border border-[#E2DDD6]'
-            }`}>
+            <span className={`text-[10px] px-2 py-0.5 rounded-full font-extrabold ${selectedCampaign === 'all' ? 'bg-white/20 text-white' : 'bg-white text-[#8C8782] border border-[#E2DDD6]'
+              }`}>
               {overallTotal}
             </span>
           </button>
@@ -236,23 +234,20 @@ export default function DashboardPage({ onNavigateToLeads }) {
               <button
                 key={cb.campaign}
                 onClick={() => setSelectedCampaign(cb.campaign)}
-                className={`px-3.5 py-2 rounded-2xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer flex items-center gap-2 shrink-0 ${
-                  isSelected
+                className={`px-3.5 py-2 rounded-2xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer flex items-center gap-2 shrink-0 ${isSelected
                     ? 'bg-[#E8622C] text-white shadow-sm shadow-[#E8622C]/30 scale-[1.02]'
                     : 'bg-[#FAF8F5] text-[#2B2B2B] hover:bg-[#EBE8E3] border border-[#E2DDD6]'
-                }`}
+                  }`}
               >
                 <Megaphone className="w-3.5 h-3.5" />
                 <span>{cb.campaign}</span>
-                <span className={`text-[10px] px-2 py-0.5 rounded-full font-extrabold ${
-                  isSelected ? 'bg-white/20 text-white' : 'bg-white text-[#E8622C] border border-[#E2DDD6]'
-                }`}>
+                <span className={`text-[10px] px-2 py-0.5 rounded-full font-extrabold ${isSelected ? 'bg-white/20 text-white' : 'bg-white text-[#E8622C] border border-[#E2DDD6]'
+                  }`}>
                   {cb.total}
                 </span>
                 {cb.won > 0 && (
-                  <span className={`text-[9px] px-1.5 py-0.5 rounded-md font-bold ${
-                    isSelected ? 'bg-emerald-500/30 text-white' : 'bg-[#F0F6EB] text-[#5C8A3A] border border-[#D3E5C7]'
-                  }`}>
+                  <span className={`text-[9px] px-1.5 py-0.5 rounded-md font-bold ${isSelected ? 'bg-emerald-500/30 text-white' : 'bg-[#F0F6EB] text-[#5C8A3A] border border-[#D3E5C7]'
+                    }`}>
                     {cb.won} won
                   </span>
                 )}
@@ -265,8 +260,8 @@ export default function DashboardPage({ onNavigateToLeads }) {
       {/* KPI Summary Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Total Leads */}
-        <div 
-          onClick={() => onNavigateToLeads(selectedCampaign !== 'all' ? { campaign: selectedCampaign } : {})} 
+        <div
+          onClick={() => onNavigateToLeads(selectedCampaign !== 'all' ? { campaign: selectedCampaign } : {})}
           className="bg-white p-5 rounded-2xl border border-[#E2DDD6] shadow-xs hover:border-[#E8622C] hover:shadow-md transition-all cursor-pointer group"
         >
           <div className="flex items-center justify-between">
@@ -287,7 +282,7 @@ export default function DashboardPage({ onNavigateToLeads }) {
         </div>
 
         {/* Follow-ups Today */}
-        <div 
+        <div
           onClick={() => onNavigateToLeads({ followup_filter: 'today', ...(selectedCampaign !== 'all' ? { campaign: selectedCampaign } : {}) })}
           className="bg-white p-5 rounded-2xl border border-[#E2DDD6] shadow-xs hover:border-[#D89C2B] hover:shadow-md transition-all cursor-pointer group"
         >
@@ -306,7 +301,7 @@ export default function DashboardPage({ onNavigateToLeads }) {
         </div>
 
         {/* Overdue Follow-ups */}
-        <div 
+        <div
           onClick={() => onNavigateToLeads({ followup_filter: 'overdue', ...(selectedCampaign !== 'all' ? { campaign: selectedCampaign } : {}) })}
           className="bg-white p-5 rounded-2xl border border-[#E2DDD6] shadow-xs hover:border-[#B23A2E] hover:shadow-md transition-all cursor-pointer group"
         >
@@ -325,7 +320,7 @@ export default function DashboardPage({ onNavigateToLeads }) {
         </div>
 
         {/* Conversion Rate */}
-        <div 
+        <div
           onClick={() => onNavigateToLeads({ status: 'Won', ...(selectedCampaign !== 'all' ? { campaign: selectedCampaign } : {}) })}
           className="bg-white p-5 rounded-2xl border border-[#E2DDD6] shadow-xs hover:border-[#5C8A3A] transition-all cursor-pointer"
         >
@@ -362,8 +357,8 @@ export default function DashboardPage({ onNavigateToLeads }) {
               )}
             </h3>
             <p className="text-xs text-[#8C8782]">
-              {selectedCampaign !== 'all' 
-                ? `Real-time stage distribution for "${selectedCampaign}"` 
+              {selectedCampaign !== 'all'
+                ? `Real-time stage distribution for "${selectedCampaign}"`
                 : 'Real-time status distribution across all campaigns'}
             </p>
           </div>
@@ -416,17 +411,15 @@ export default function DashboardPage({ onNavigateToLeads }) {
         <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1.5 pt-0.5 -mx-1 px-1">
           <button
             onClick={() => setSelectedCampaign('all')}
-            className={`px-3.5 py-2 rounded-2xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer flex items-center gap-2 shrink-0 ${
-              selectedCampaign === 'all'
+            className={`px-3.5 py-2 rounded-2xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer flex items-center gap-2 shrink-0 ${selectedCampaign === 'all'
                 ? 'bg-[#E8622C] text-white shadow-sm shadow-[#E8622C]/30 scale-[1.02]'
                 : 'bg-[#FAF8F5] text-[#2B2B2B] hover:bg-[#EBE8E3] border border-[#E2DDD6]'
-            }`}
+              }`}
           >
             <Layers className="w-3.5 h-3.5" />
             <span>All Campaigns</span>
-            <span className={`text-[10px] px-2 py-0.5 rounded-full font-extrabold ${
-              selectedCampaign === 'all' ? 'bg-white/20 text-white' : 'bg-white text-[#8C8782] border border-[#E2DDD6]'
-            }`}>
+            <span className={`text-[10px] px-2 py-0.5 rounded-full font-extrabold ${selectedCampaign === 'all' ? 'bg-white/20 text-white' : 'bg-white text-[#8C8782] border border-[#E2DDD6]'
+              }`}>
               {summary.totalLeads ?? 0}
             </span>
           </button>
@@ -437,23 +430,20 @@ export default function DashboardPage({ onNavigateToLeads }) {
               <button
                 key={cb.campaign}
                 onClick={() => setSelectedCampaign(cb.campaign)}
-                className={`px-3.5 py-2 rounded-2xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer flex items-center gap-2 shrink-0 ${
-                  isSelected
+                className={`px-3.5 py-2 rounded-2xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer flex items-center gap-2 shrink-0 ${isSelected
                     ? 'bg-[#E8622C] text-white shadow-sm shadow-[#E8622C]/30 scale-[1.02]'
                     : 'bg-[#FAF8F5] text-[#2B2B2B] hover:bg-[#EBE8E3] border border-[#E2DDD6]'
-                }`}
+                  }`}
               >
                 <Megaphone className="w-3.5 h-3.5" />
                 <span>{cb.campaign}</span>
-                <span className={`text-[10px] px-2 py-0.5 rounded-full font-extrabold ${
-                  isSelected ? 'bg-white/20 text-white' : 'bg-white text-[#E8622C] border border-[#E2DDD6]'
-                }`}>
+                <span className={`text-[10px] px-2 py-0.5 rounded-full font-extrabold ${isSelected ? 'bg-white/20 text-white' : 'bg-white text-[#E8622C] border border-[#E2DDD6]'
+                  }`}>
                   {cb.total}
                 </span>
                 {cb.won > 0 && (
-                  <span className={`text-[9px] px-1.5 py-0.2 rounded-md font-bold ${
-                    isSelected ? 'bg-emerald-500/30 text-white' : 'bg-[#F0F6EB] text-[#5C8A3A] border border-[#D3E5C7]'
-                  }`}>
+                  <span className={`text-[9px] px-1.5 py-0.2 rounded-md font-bold ${isSelected ? 'bg-emerald-500/30 text-white' : 'bg-[#F0F6EB] text-[#5C8A3A] border border-[#D3E5C7]'
+                    }`}>
                     {cb.won} won
                   </span>
                 )}
@@ -652,11 +642,10 @@ export default function DashboardPage({ onNavigateToLeads }) {
                   type="button"
                   onClick={() => setSalesTeamView('cards')}
                   title="Cards Grid View"
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
-                    salesTeamView === 'cards'
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${salesTeamView === 'cards'
                       ? 'bg-white text-[#2B2B2B] shadow-2xs font-bold'
                       : 'text-[#8C8782] hover:text-[#2B2B2B]'
-                  }`}
+                    }`}
                 >
                   <LayoutGrid className="w-3.5 h-3.5" />
                   <span>Cards</span>
@@ -665,11 +654,10 @@ export default function DashboardPage({ onNavigateToLeads }) {
                   type="button"
                   onClick={() => setSalesTeamView('table')}
                   title="Leaderboard Table View"
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
-                    salesTeamView === 'table'
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${salesTeamView === 'table'
                       ? 'bg-white text-[#2B2B2B] shadow-2xs font-bold'
                       : 'text-[#8C8782] hover:text-[#2B2B2B]'
-                  }`}
+                    }`}
                 >
                   <Table className="w-3.5 h-3.5" />
                   <span>Table</span>
@@ -760,11 +748,10 @@ export default function DashboardPage({ onNavigateToLeads }) {
                 return (
                   <div
                     key={sp.id}
-                    className={`rounded-2xl border transition-all p-5 flex flex-col justify-between ${
-                      isRank1
+                    className={`rounded-2xl border transition-all p-5 flex flex-col justify-between ${isRank1
                         ? 'bg-linear-to-b from-[#FFFDF7] to-white border-[#FDE68A] shadow-xs'
                         : 'bg-[#FAF8F5]/60 hover:bg-white border-[#E2DDD6] hover:shadow-xs'
-                    }`}
+                      }`}
                   >
                     <div>
                       {/* Top Rank + Win Rate Badge */}
@@ -797,11 +784,10 @@ export default function DashboardPage({ onNavigateToLeads }) {
 
                       {/* Rep Profile Info */}
                       <div className="flex items-center gap-3 mb-4">
-                        <div className={`w-11 h-11 rounded-2xl flex items-center justify-center font-bold text-sm shrink-0 border ${
-                          isRank1 
-                            ? 'bg-[#FEF3C7] text-[#92400E] border-[#FDE68A]' 
+                        <div className={`w-11 h-11 rounded-2xl flex items-center justify-center font-bold text-sm shrink-0 border ${isRank1
+                            ? 'bg-[#FEF3C7] text-[#92400E] border-[#FDE68A]'
                             : 'bg-white text-[#2B2B2B] border-[#E2DDD6]'
-                        }`}>
+                          }`}>
                           {initials}
                         </div>
                         <div className="min-w-0">
@@ -903,9 +889,8 @@ export default function DashboardPage({ onNavigateToLeads }) {
                       <tr key={sp.id} className="hover:bg-[#FAF8F5]/60 transition-colors">
                         <td className="py-3 px-4">
                           <div className="flex items-center gap-2.5">
-                            <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
-                              isRank1 ? 'bg-[#FEF3C7] text-[#92400E] border border-[#FDE68A]' : 'bg-[#FAF8F5] text-[#8C8782] border border-[#E2DDD6]'
-                            }`}>
+                            <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${isRank1 ? 'bg-[#FEF3C7] text-[#92400E] border border-[#FDE68A]' : 'bg-[#FAF8F5] text-[#8C8782] border border-[#E2DDD6]'
+                              }`}>
                               {sp.rank}
                             </span>
                             <div>
@@ -973,8 +958,8 @@ export default function DashboardPage({ onNavigateToLeads }) {
                   )}
                 </h3>
                 <p className="text-xs text-[#8C8782]">
-                  {selectedCampaign !== 'all' 
-                    ? `Urgent follow-ups for leads in "${selectedCampaign}"` 
+                  {selectedCampaign !== 'all'
+                    ? `Urgent follow-ups for leads in "${selectedCampaign}"`
                     : 'Quickly reach out and update follow-up logs across all campaigns'}
                 </p>
               </div>
@@ -1072,8 +1057,8 @@ export default function DashboardPage({ onNavigateToLeads }) {
                 )}
               </div>
               <p className="text-xs text-[#8C8782] mb-4">
-                {selectedCampaign !== 'all' 
-                  ? `Rep conversions specifically for "${selectedCampaign}"` 
+                {selectedCampaign !== 'all'
+                  ? `Rep conversions specifically for "${selectedCampaign}"`
                   : 'Assigned leads & conversion wins across all campaigns'}
               </p>
 
@@ -1087,9 +1072,8 @@ export default function DashboardPage({ onNavigateToLeads }) {
                     <div key={sp.id} className="p-3 bg-[#FAF8F5] rounded-2xl border border-[#E2DDD6]">
                       <div className="flex items-center justify-between text-xs">
                         <div className="flex items-center gap-2">
-                          <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${
-                            sp.rank === 1 ? 'bg-[#FEF3C7] text-[#92400E]' : sp.rank === 2 ? 'bg-[#F1F5F9] text-[#475569]' : 'bg-[#FAF8F5] text-[#8C8782]'
-                          }`}>
+                          <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${sp.rank === 1 ? 'bg-[#FEF3C7] text-[#92400E]' : sp.rank === 2 ? 'bg-[#F1F5F9] text-[#475569]' : 'bg-[#FAF8F5] text-[#8C8782]'
+                            }`}>
                             {sp.rank}
                           </span>
                           <span className="font-bold text-[#2B2B2B]">{sp.name}</span>
@@ -1141,11 +1125,10 @@ export default function DashboardPage({ onNavigateToLeads }) {
                       onClick={() => {
                         setSelectedCampaign(cb.campaign);
                       }}
-                      className={`p-3 rounded-2xl border transition-all cursor-pointer group ${
-                        isSelected 
-                          ? 'bg-[#FDF1EB] border-[#E8622C] ring-2 ring-[#E8622C]/20 shadow-xs' 
+                      className={`p-3 rounded-2xl border transition-all cursor-pointer group ${isSelected
+                          ? 'bg-[#FDF1EB] border-[#E8622C] ring-2 ring-[#E8622C]/20 shadow-xs'
                           : 'bg-[#FAF8F5] hover:bg-[#FDF1EB]/60 border-[#E2DDD6] hover:border-[#E8622C]/40'
-                      }`}
+                        }`}
                     >
                       <div className="flex items-center justify-between text-xs">
                         <div className="flex items-center gap-1.5 min-w-0 pr-2">
@@ -1164,9 +1147,8 @@ export default function DashboardPage({ onNavigateToLeads }) {
                           )}
                         </div>
                         <div className="flex items-center gap-1.5 shrink-0">
-                          <span className={`text-[11px] font-bold px-2 py-0.5 rounded-md border shadow-2xs ${
-                            isSelected ? 'bg-[#E8622C] text-white border-[#E8622C]' : 'bg-white text-[#E8622C] border-[#E8622C]/20'
-                          }`}>
+                          <span className={`text-[11px] font-bold px-2 py-0.5 rounded-md border shadow-2xs ${isSelected ? 'bg-[#E8622C] text-white border-[#E8622C]' : 'bg-white text-[#E8622C] border-[#E8622C]/20'
+                            }`}>
                             {cb.total} leads
                           </span>
                           {cb.won > 0 && (
