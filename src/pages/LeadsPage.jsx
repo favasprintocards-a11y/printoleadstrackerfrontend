@@ -604,17 +604,15 @@ export default function LeadsPage({ initialFilter = {}, openAddModalTrigger = 0 
           </div>
 
           <div className="flex items-center gap-1.5 flex-wrap justify-end">
-            {isAdmin && (
-              <button
-                onClick={() => handleDownloadSalespersonReport(true)}
-                disabled={reportDownloading}
-                className="px-3 py-1.5 bg-[#E8622C]/20 hover:bg-[#E8622C]/30 text-[#E8622C] border border-[#E8622C]/40 rounded-xl text-xs font-semibold flex items-center gap-1.5 cursor-pointer transition-all disabled:opacity-50"
-                title="Download salesperson report for selected leads only"
-              >
-                <Download className="w-3.5 h-3.5" />
-                <span>{reportDownloading ? 'Generating...' : 'Download Report'}</span>
-              </button>
-            )}
+            <button
+              onClick={() => handleDownloadSalespersonReport(true)}
+              disabled={reportDownloading}
+              className="px-3 py-1.5 bg-[#E8622C]/20 hover:bg-[#E8622C]/30 text-[#E8622C] border border-[#E8622C]/40 rounded-xl text-xs font-semibold flex items-center gap-1.5 cursor-pointer transition-all disabled:opacity-50"
+              title="Download report of selected leads only"
+            >
+              <Download className="w-3.5 h-3.5" />
+              <span>{reportDownloading ? 'Generating...' : 'Download Report'}</span>
+            </button>
 
             <button
               onClick={() => setIsBulkModalOpen(true)}
