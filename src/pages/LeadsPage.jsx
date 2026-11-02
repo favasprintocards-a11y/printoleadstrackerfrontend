@@ -402,8 +402,8 @@ export default function LeadsPage({ initialFilter = {}, openAddModalTrigger = 0 
               onClick={() => setSortOrder(prev => prev === 'asc' ? 'desc' : 'asc')}
               title={`Currently sorted ${sortOrder === 'desc' ? 'Descending (Newest / Z-A)' : 'Ascending (Oldest / A-Z)'}. Click to reverse.`}
               className={`p-2 border rounded-xl transition-all cursor-pointer ${sortOrder === 'asc'
-                  ? 'bg-[#E8622C]/10 border-[#E8622C]/40 text-[#E8622C]'
-                  : 'bg-slate-50 hover:bg-slate-100 border-slate-200 text-slate-600'
+                ? 'bg-[#E8622C]/10 border-[#E8622C]/40 text-[#E8622C]'
+                : 'bg-slate-50 hover:bg-slate-100 border-slate-200 text-slate-600'
                 }`}
             >
               {sortOrder === 'asc' ? (
@@ -419,8 +419,8 @@ export default function LeadsPage({ initialFilter = {}, openAddModalTrigger = 0 
             id="mobile-filters-toggle-btn"
             onClick={() => setShowMobileFilters(prev => !prev)}
             className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer shrink-0 ${showMobileFilters || activeFiltersCount > 0
-                ? 'bg-[#E8622C]/10 text-[#E8622C] border-[#E8622C]/30'
-                : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
+              ? 'bg-[#E8622C]/10 text-[#E8622C] border-[#E8622C]/30'
+              : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
               }`}
           >
             <SlidersHorizontal className="w-3.5 h-3.5" />
@@ -456,8 +456,8 @@ export default function LeadsPage({ initialFilter = {}, openAddModalTrigger = 0 
                 key={st}
                 onClick={() => setStatusFilter(st === 'All' ? 'all' : st)}
                 className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer shrink-0 ${isCurrent
-                    ? 'bg-[#E8622C] text-white shadow-xs scale-[1.02]'
-                    : 'bg-slate-100/80 hover:bg-slate-200 text-slate-600'
+                  ? 'bg-[#E8622C] text-white shadow-xs scale-[1.02]'
+                  : 'bg-slate-100/80 hover:bg-slate-200 text-slate-600'
                   }`}
               >
                 {st}
@@ -708,8 +708,8 @@ export default function LeadsPage({ initialFilter = {}, openAddModalTrigger = 0 
                   <div
                     key={lead.id}
                     className={`p-4 rounded-2xl border transition-all ${isSelected
-                        ? 'bg-[#E8622C]/5 border-[#E8622C] ring-2 ring-[#E8622C]/20 shadow-xs'
-                        : 'bg-white border-slate-200/90 shadow-2xs'
+                      ? 'bg-[#E8622C]/5 border-[#E8622C] ring-2 ring-[#E8622C]/20 shadow-xs'
+                      : 'bg-white border-slate-200/90 shadow-2xs'
                       }`}
                   >
                     {/* Card Top: Checkbox, Name, Status, Assigned Badge */}
@@ -747,8 +747,8 @@ export default function LeadsPage({ initialFilter = {}, openAddModalTrigger = 0 
                         <StatusBadge status={lead.status} />
                         {lead.assigned_user_name ? (
                           <span className={`text-[10px] px-2 py-0.5 rounded-md font-semibold border ${isCurrentUser
-                              ? 'bg-emerald-50 text-emerald-700 border-emerald-300 font-bold'
-                              : 'bg-[#FAF8F5] text-[#2B2B2B] border-[#E2DDD6]'
+                            ? 'bg-emerald-50 text-emerald-700 border-emerald-300 font-bold'
+                            : 'bg-[#FAF8F5] text-[#2B2B2B] border-[#E2DDD6]'
                             }`}>
                             {isCurrentUser ? `✓ You` : lead.assigned_user_name.split(',')[0]}
                           </span>
@@ -1120,8 +1120,8 @@ export default function LeadsPage({ initialFilter = {}, openAddModalTrigger = 0 
                                       <span
                                         key={i}
                                         className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-semibold ${isCurrentUser
-                                            ? 'bg-emerald-50 text-emerald-700 border border-emerald-300 shadow-2xs font-bold'
-                                            : 'bg-[#FAF8F5] text-[#2B2B2B] border border-[#E2DDD6]'
+                                          ? 'bg-emerald-50 text-emerald-700 border border-emerald-300 shadow-2xs font-bold'
+                                          : 'bg-[#FAF8F5] text-[#2B2B2B] border border-[#E2DDD6]'
                                           }`}
                                       >
                                         {isCurrentUser ? `✓ You (${cleanName})` : cleanName}
