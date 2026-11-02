@@ -202,7 +202,6 @@ export const leadApi = {
     a.click();
     window.URL.revokeObjectURL(url);
   },
-
   downloadSalespersonReport: async (params = {}) => {
     const query = new URLSearchParams();
     Object.entries(params).forEach(([k, v]) => {
@@ -214,7 +213,7 @@ export const leadApi = {
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `salesperson_report_${new Date().toISOString().split('T')[0]}.xlsx`;
+    a.download = `salesperson_leads_report_${new Date().toISOString().split('T')[0]}.xlsx`;
     a.click();
     window.URL.revokeObjectURL(url);
   }

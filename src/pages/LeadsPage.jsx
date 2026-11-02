@@ -276,15 +276,15 @@ export default function LeadsPage({ initialFilter = {}, openAddModalTrigger = 0 
   };
 
   // Download salesperson-wise report
-  const [reportDownloading, setReportDownloading] = React.useState(false);
-  const handleSalespersonReport = async () => {
+  const [reportDownloading, setReportDownloading] = useState(false);
+  const handleDownloadSalespersonReport = async () => {
     setReportDownloading(true);
     try {
       await leadApi.downloadSalespersonReport({
-        date_from: dateFrom,
-        date_to: dateTo,
         campaign: campaignFilter !== 'all' ? campaignFilter : '',
-        status: statusFilter !== 'all' ? statusFilter : ''
+        status: statusFilter !== 'all' ? statusFilter : '',
+        date_from: dateFrom,
+        date_to: dateTo
       });
     } catch (err) {
       alert('Failed to download report: ' + (err.message || 'Unknown error'));
@@ -329,16 +329,14 @@ export default function LeadsPage({ initialFilter = {}, openAddModalTrigger = 0 
                 <Download className="w-3.5 h-3.5 text-slate-500" />
                 <span className="hidden sm:inline">Export</span>
               </button>
-
-              {/* Salesperson Report Button */}
               <button
-                onClick={handleSalespersonReport}
+                onClick={handleDownloadSalespersonReport}
                 disabled={reportDownloading}
-                title="Download leads grouped by salesperson as Excel"
-                className="flex items-center gap-1.5 px-3 py-1.5 border border-[#E8622C]/40 bg-[#FDF8F5] hover:bg-[#E8622C]/10 text-[#E8622C] rounded-xl text-xs font-semibold transition-all cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+                title="Download salesperson-wise leads report (Excel with one sheet per rep)"
+                className="flex items-center gap-1.5 px-3 py-1.5 border border-[#E8622C]/40 hover:bg-[#FDF8F5] text-[#E8622C] rounded-xl text-xs font-semibold transition-all cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 <Download className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">{reportDownloading ? 'Preparing…' : 'Rep Report'}</span>
+                <span className="hidden sm:inline">{reportDownloading ? 'Generating...' : 'Sales Report'}</span>
               </button>
               <button
                 onClick={() => {

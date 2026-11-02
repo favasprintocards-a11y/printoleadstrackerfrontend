@@ -16,14 +16,22 @@ export function AuthProvider({ children }) {
         return;
       }
 
+      // Timeout after 8 seconds — don't block the UI forever on cold starts
+      const timeout = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('Session restore timeout')), 8000)
+      );
+
       try {
-        const data = await authApi.getMe();
+        const data = await Promise.race([authApi.getMe(), timeout]);
         setUser(data.user);
       } catch (err) {
         console.warn('Failed to restore session:', err.message);
-        localStorage.removeItem('lead_tracker_token');
+        // Only clear token on auth errors, not timeouts/network issues
+        if (err.message !== 'Session restore timeout') {
+          localStorage.removeItem('lead_tracker_token');
+          setToken(null);
+        }
         setUser(null);
-        setToken(null);
       } finally {
         setLoading(false);
       }
