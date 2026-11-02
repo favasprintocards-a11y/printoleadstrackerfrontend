@@ -39,6 +39,7 @@ export default function UploadLeadsPage({ onNavigateToLeads }) {
   const [defaultAssignedTo, setDefaultAssignedTo] = useState('');
   const [defaultCampaignName, setDefaultCampaignName] = useState('Meta Ads - General');
   const [salesUsers, setSalesUsers] = useState([]);
+  const [availableCampaigns, setAvailableCampaigns] = useState([]);
 
   // Import execution state
   const [importing, setImporting] = useState(false);
@@ -60,6 +61,13 @@ export default function UploadLeadsPage({ onNavigateToLeads }) {
     userApi.getUsers()
       .then(res => setSalesUsers((res.users || []).filter(u => u.role === 'sales' && u.is_active)))
       .catch(err => console.error('Failed to load users:', err));
+
+    leadApi.getCampaigns()
+      .then(res => {
+        const camps = (res.campaigns || []).map(c => c.campaign).filter(Boolean);
+        setAvailableCampaigns(camps);
+      })
+      .catch(err => console.error('Failed to load campaigns:', err));
   }, []);
 
   // Load history when tab is switched to 'history'
@@ -995,13 +1003,41 @@ export default function UploadLeadsPage({ onNavigateToLeads }) {
                       <div className="flex items-center gap-2">
                         <Megaphone className="w-4 h-4 text-[#E8622C]" />
                         <span className="text-xs font-medium text-stone-700">Default Campaign:</span>
-                        <input
-                          type="text"
-                          value={defaultCampaignName}
-                          onChange={(e) => setDefaultCampaignName(e.target.value)}
-                          placeholder="e.g. Meta Ads - Corporate NFC"
-                          className="w-44 px-3 py-1.5 bg-stone-50 border border-stone-200 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-[#E8622C]/20"
-                        />
+                        <div className="flex items-center gap-1.5">
+                          <input
+                            type="text"
+                            value={defaultCampaignName}
+                            onChange={(e) => setDefaultCampaignName(e.target.value)}
+                            list="previous-campaigns-list"
+                            placeholder="e.g. Meta Ads - Corporate NFC"
+                            className="w-44 sm:w-52 px-3 py-1.5 bg-stone-50 border border-stone-200 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-[#E8622C]/20"
+                          />
+                          <datalist id="previous-campaigns-list">
+                            {availableCampaigns.map((camp) => (
+                              <option key={camp} value={camp} />
+                            ))}
+                          </datalist>
+
+                          {availableCampaigns.length > 0 && (
+                            <select
+                              value={availableCampaigns.includes(defaultCampaignName) ? defaultCampaignName : ''}
+                              onChange={(e) => {
+                                if (e.target.value) {
+                                  setDefaultCampaignName(e.target.value);
+                                }
+                              }}
+                              className="px-2 py-1.5 bg-stone-100 hover:bg-stone-200 border border-stone-200 rounded-xl text-xs font-medium text-stone-700 cursor-pointer transition-colors"
+                              title="Select from previously added campaigns"
+                            >
+                              <option value="">▼ Select Previous ({availableCampaigns.length})</option>
+                              {availableCampaigns.map((camp) => (
+                                <option key={camp} value={camp}>
+                                  {camp}
+                                </option>
+                              ))}
+                            </select>
+                          )}
+                        </div>
                       </div>
 
                       <div className="flex items-center gap-2">
