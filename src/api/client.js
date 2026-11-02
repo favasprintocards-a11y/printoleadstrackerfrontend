@@ -193,32 +193,56 @@ export const leadApi = {
   getImportIssues: (batchId) => apiRequest(`/leads/upload/history/${batchId}/issues`),
   getLatestImportIssues: () => apiRequest('/leads/upload/issues/latest'),
   exportLeads: async (params = {}) => {
-    const query = new URLSearchParams();
-    Object.entries(params).forEach(([k, v]) => {
-      if (v !== undefined && v !== null && v !== '') {
-        query.append(k, v);
-      }
-    });
-    const blob = await apiRequest(`/leads/export?${query.toString()}`, { isBlob: true });
+    let blob;
+    if (params.lead_ids && Array.isArray(params.lead_ids)) {
+      blob = await apiRequest('/leads/export', {
+        method: 'POST',
+        body: JSON.stringify(params),
+        isBlob: true
+      });
+    } else {
+      const query = new URLSearchParams();
+      Object.entries(params).forEach(([k, v]) => {
+        if (v !== undefined && v !== null && v !== '') {
+          query.append(k, v);
+        }
+      });
+      blob = await apiRequest(`/leads/export?${query.toString()}`, { isBlob: true });
+    }
+    const isSelected = !!params.lead_ids;
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `leads_export_${new Date().toISOString().split('T')[0]}.xlsx`;
+    a.download = isSelected
+      ? `selected_leads_export_${new Date().toISOString().split('T')[0]}.xlsx`
+      : `leads_export_${new Date().toISOString().split('T')[0]}.xlsx`;
     a.click();
     window.URL.revokeObjectURL(url);
   },
   downloadSalespersonReport: async (params = {}) => {
-    const query = new URLSearchParams();
-    Object.entries(params).forEach(([k, v]) => {
-      if (v !== undefined && v !== null && v !== '') {
-        query.append(k, v);
-      }
-    });
-    const blob = await apiRequest(`/leads/report/salesperson?${query.toString()}`, { isBlob: true });
+    let blob;
+    if (params.lead_ids && Array.isArray(params.lead_ids)) {
+      blob = await apiRequest('/leads/report/salesperson', {
+        method: 'POST',
+        body: JSON.stringify(params),
+        isBlob: true
+      });
+    } else {
+      const query = new URLSearchParams();
+      Object.entries(params).forEach(([k, v]) => {
+        if (v !== undefined && v !== null && v !== '') {
+          query.append(k, v);
+        }
+      });
+      blob = await apiRequest(`/leads/report/salesperson?${query.toString()}`, { isBlob: true });
+    }
+    const isSelected = !!params.lead_ids;
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `salesperson_leads_report_${new Date().toISOString().split('T')[0]}.xlsx`;
+    a.download = isSelected
+      ? `selected_leads_report_${new Date().toISOString().split('T')[0]}.xlsx`
+      : `salesperson_leads_report_${new Date().toISOString().split('T')[0]}.xlsx`;
     a.click();
     window.URL.revokeObjectURL(url);
   }

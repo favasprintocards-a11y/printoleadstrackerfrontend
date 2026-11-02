@@ -270,32 +270,40 @@ export default function LeadsPage({ initialFilter = {}, openAddModalTrigger = 0 
     fetchLeads();
   };
 
-  // Export to Excel
-  const handleExport = () => {
-    leadApi.exportLeads({
-      search,
-      status: statusFilter,
-      assigned_to: assignedFilter,
-      city: cityFilter,
-      campaign: campaignFilter,
-      date_from: dateFrom,
-      date_to: dateTo,
-      sort_by: sortBy,
-      sort_order: sortOrder
-    });
+  // Export to Excel (Selected only if leads checked, otherwise filtered)
+  const handleExport = (onlySelected = false) => {
+    if (onlySelected || selectedIds.length > 0) {
+      leadApi.exportLeads({ lead_ids: selectedIds });
+    } else {
+      leadApi.exportLeads({
+        search,
+        status: statusFilter,
+        assigned_to: assignedFilter,
+        city: cityFilter,
+        campaign: campaignFilter,
+        date_from: dateFrom,
+        date_to: dateTo,
+        sort_by: sortBy,
+        sort_order: sortOrder
+      });
+    }
   };
 
-  // Download salesperson-wise report
+  // Download salesperson-wise report (Selected only if leads checked, otherwise filtered)
   const [reportDownloading, setReportDownloading] = useState(false);
-  const handleDownloadSalespersonReport = async () => {
+  const handleDownloadSalespersonReport = async (onlySelected = false) => {
     setReportDownloading(true);
     try {
-      await leadApi.downloadSalespersonReport({
-        campaign: campaignFilter !== 'all' ? campaignFilter : '',
-        status: statusFilter !== 'all' ? statusFilter : '',
-        date_from: dateFrom,
-        date_to: dateTo
-      });
+      if (onlySelected || selectedIds.length > 0) {
+        await leadApi.downloadSalespersonReport({ lead_ids: selectedIds });
+      } else {
+        await leadApi.downloadSalespersonReport({
+          campaign: campaignFilter !== 'all' ? campaignFilter : '',
+          status: statusFilter !== 'all' ? statusFilter : '',
+          date_from: dateFrom,
+          date_to: dateTo
+        });
+      }
     } catch (err) {
       alert('Failed to download report: ' + (err.message || 'Unknown error'));
     } finally {
@@ -333,20 +341,29 @@ export default function LeadsPage({ initialFilter = {}, openAddModalTrigger = 0 
           ) : (
             <div className="flex items-center gap-2">
               <button
-                onClick={handleExport}
-                className="flex items-center gap-1.5 px-3 py-1.5 border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl text-xs font-semibold transition-all cursor-pointer"
+                onClick={() => handleExport(false)}
+                className={`flex items-center gap-1.5 px-3 py-1.5 border rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                  selectedIds.length > 0
+                    ? 'border-[#E8622C] bg-[#E8622C]/10 text-[#E8622C]'
+                    : 'border-slate-200 hover:bg-slate-50 text-slate-700'
+                }`}
+                title={selectedIds.length > 0 ? `Export ${selectedIds.length} selected leads to Excel` : 'Export all leads matching filters'}
               >
                 <Download className="w-3.5 h-3.5 text-slate-500" />
-                <span className="hidden sm:inline">Export</span>
+                <span className="hidden sm:inline">
+                  {selectedIds.length > 0 ? `Export (${selectedIds.length})` : 'Export'}
+                </span>
               </button>
               <button
-                onClick={handleDownloadSalespersonReport}
+                onClick={() => handleDownloadSalespersonReport(false)}
                 disabled={reportDownloading}
-                title="Download salesperson-wise leads report (Excel with one sheet per rep)"
+                title={selectedIds.length > 0 ? `Download salesperson report for ${selectedIds.length} selected leads only` : "Download salesperson-wise leads report (Excel with one sheet per rep)"}
                 className="flex items-center gap-1.5 px-3 py-1.5 border border-[#E8622C]/40 hover:bg-[#FDF8F5] text-[#E8622C] rounded-xl text-xs font-semibold transition-all cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 <Download className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">{reportDownloading ? 'Generating...' : 'Sales Report'}</span>
+                <span className="hidden sm:inline">
+                  {reportDownloading ? 'Generating...' : selectedIds.length > 0 ? `Sales Report (${selectedIds.length})` : 'Sales Report'}
+                </span>
               </button>
               <button
                 onClick={() => {
@@ -587,7 +604,19 @@ export default function LeadsPage({ initialFilter = {}, openAddModalTrigger = 0 
             <span>{selectedIds.length} selected</span>
           </div>
 
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-1.5 flex-wrap justify-end">
+            {isAdmin && (
+              <button
+                onClick={() => handleDownloadSalespersonReport(true)}
+                disabled={reportDownloading}
+                className="px-3 py-1.5 bg-[#E8622C]/20 hover:bg-[#E8622C]/30 text-[#E8622C] border border-[#E8622C]/40 rounded-xl text-xs font-semibold flex items-center gap-1.5 cursor-pointer transition-all disabled:opacity-50"
+                title="Download salesperson report for selected leads only"
+              >
+                <Download className="w-3.5 h-3.5" />
+                <span>{reportDownloading ? 'Generating...' : 'Download Report'}</span>
+              </button>
+            )}
+
             <button
               onClick={() => setIsBulkModalOpen(true)}
               className="px-3.5 py-1.5 bg-[#E8622C] hover:bg-[#D0521F] text-white rounded-xl text-xs font-semibold shadow-xs cursor-pointer transition-all"
