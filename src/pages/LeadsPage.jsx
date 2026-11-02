@@ -216,6 +216,16 @@ export default function LeadsPage({ initialFilter = {}, openAddModalTrigger = 0 
     );
   };
 
+  const toggleSelectDate = (dayLeads = []) => {
+    const dayIds = dayLeads.map(l => l.id);
+    const isAllDateSelected = dayIds.length > 0 && dayIds.every(id => selectedIds.includes(id));
+    if (isAllDateSelected) {
+      setSelectedIds(prev => prev.filter(id => !dayIds.includes(id)));
+    } else {
+      setSelectedIds(prev => Array.from(new Set([...prev, ...dayIds])));
+    }
+  };
+
   // Lead CRUD handlers
   const handleSaveLead = async (formData) => {
     if (editingLead) {
@@ -660,11 +670,27 @@ export default function LeadsPage({ initialFilter = {}, openAddModalTrigger = 0 
           groupLeadsByDate(leads).map(({ dateKey, rawDate, leads: dayLeads }) => (
             <React.Fragment key={dateKey}>
               {/* Date Group Heading */}
-              <div className="flex items-center gap-2 px-1 py-2 mt-3 first:mt-0">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-[#E8622C] bg-[#FDF8F5] border border-[#E8622C]/25 px-3 py-1 rounded-full flex items-center gap-1.5">
-                  <Calendar className="w-3 h-3" />
-                  {formatGroupDateHeading(rawDate)}
-                </span>
+              <div className="flex items-center justify-between px-1 py-2 mt-3 first:mt-0">
+                <label className="flex items-center gap-2 cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    checked={dayLeads.length > 0 && dayLeads.every(l => selectedIds.includes(l.id))}
+                    onChange={() => toggleSelectDate(dayLeads)}
+                    ref={(el) => {
+                      if (el) {
+                        const dayIds = dayLeads.map(l => l.id);
+                        const hasSome = dayIds.some(id => selectedIds.includes(id));
+                        const hasAll = dayIds.length > 0 && dayIds.every(id => selectedIds.includes(id));
+                        el.indeterminate = hasSome && !hasAll;
+                      }
+                    }}
+                    className="w-4 h-4 rounded border-slate-300 text-[#E8622C] focus:ring-[#E8622C] cursor-pointer"
+                  />
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-[#E8622C] bg-[#FDF8F5] border border-[#E8622C]/25 px-3 py-1 rounded-full flex items-center gap-1.5 hover:bg-[#FBEFEA] transition-colors">
+                    <Calendar className="w-3 h-3" />
+                    {formatGroupDateHeading(rawDate)}
+                  </span>
+                </label>
                 <span className="text-[10px] font-semibold text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">
                   {dayLeads.length} lead{dayLeads.length !== 1 ? 's' : ''}
                 </span>
@@ -967,10 +993,26 @@ export default function LeadsPage({ initialFilter = {}, openAddModalTrigger = 0 
                       <tr>
                         <td colSpan={9} className="px-4 py-2.5 bg-[#FDF8F5] border-y border-[#E8622C]/20">
                           <div className="flex items-center gap-2.5">
-                            <span className="text-[11px] font-bold text-[#E8622C] flex items-center gap-1.5">
-                              <Calendar className="w-3.5 h-3.5" />
-                              {formatGroupDateHeading(rawDate)}
-                            </span>
+                            <label className="flex items-center gap-2 cursor-pointer select-none">
+                              <input
+                                type="checkbox"
+                                checked={dayLeads.length > 0 && dayLeads.every(l => selectedIds.includes(l.id))}
+                                onChange={() => toggleSelectDate(dayLeads)}
+                                ref={(el) => {
+                                  if (el) {
+                                    const dayIds = dayLeads.map(l => l.id);
+                                    const hasSome = dayIds.some(id => selectedIds.includes(id));
+                                    const hasAll = dayIds.length > 0 && dayIds.every(id => selectedIds.includes(id));
+                                    el.indeterminate = hasSome && !hasAll;
+                                  }
+                                }}
+                                className="w-4 h-4 rounded border-slate-300 text-[#E8622C] focus:ring-[#E8622C] cursor-pointer"
+                              />
+                              <span className="text-[11px] font-bold text-[#E8622C] flex items-center gap-1.5 hover:text-[#D0521F] transition-colors">
+                                <Calendar className="w-3.5 h-3.5" />
+                                {formatGroupDateHeading(rawDate)}
+                              </span>
+                            </label>
                             <span className="text-[10px] font-semibold text-slate-400 bg-white border border-slate-200 px-2 py-0.5 rounded-full">
                               {dayLeads.length} lead{dayLeads.length !== 1 ? 's' : ''}
                             </span>
