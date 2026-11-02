@@ -342,8 +342,8 @@ export default function UploadLeadsPage({ onNavigateToLeads }) {
             <button
               onClick={() => setActiveTab('upload')}
               className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl transition-all cursor-pointer ${activeTab === 'upload'
-                  ? 'bg-white text-[#2B2B2B] shadow-xs font-bold'
-                  : 'text-stone-500 hover:text-stone-800'
+                ? 'bg-white text-[#2B2B2B] shadow-xs font-bold'
+                : 'text-stone-500 hover:text-stone-800'
                 }`}
             >
               <UploadCloud className="w-3.5 h-3.5 text-[#E8622C]" />
@@ -353,8 +353,8 @@ export default function UploadLeadsPage({ onNavigateToLeads }) {
             <button
               onClick={() => setActiveTab('history')}
               className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl transition-all cursor-pointer ${activeTab === 'history'
-                  ? 'bg-white text-[#2B2B2B] shadow-xs font-bold'
-                  : 'text-stone-500 hover:text-stone-800'
+                ? 'bg-white text-[#2B2B2B] shadow-xs font-bold'
+                : 'text-stone-500 hover:text-stone-800'
                 }`}
             >
               <History className="w-3.5 h-3.5 text-[#D89C2B]" />
@@ -417,8 +417,8 @@ export default function UploadLeadsPage({ onNavigateToLeads }) {
                         key={batch.id}
                         onClick={() => handleSelectBatch(batch)}
                         className={`p-3 rounded-2xl border transition-all cursor-pointer ${isSelected
-                            ? 'bg-amber-50/60 border-[#D89C2B] shadow-xs'
-                            : 'bg-stone-50/60 hover:bg-stone-100/80 border-stone-200/80'
+                          ? 'bg-amber-50/60 border-[#D89C2B] shadow-xs'
+                          : 'bg-stone-50/60 hover:bg-stone-100/80 border-stone-200/80'
                           }`}
                       >
                         <div className="flex items-start justify-between gap-2">
@@ -719,8 +719,8 @@ export default function UploadLeadsPage({ onNavigateToLeads }) {
                 <div
                   onClick={() => setIssueFilter('imported')}
                   className={`p-4 rounded-2xl border transition-all cursor-pointer ${issueFilter === 'imported'
-                      ? 'bg-emerald-100/70 border-emerald-400 ring-2 ring-emerald-400/30'
-                      : 'bg-emerald-50 border-emerald-200 hover:bg-emerald-100/50'
+                    ? 'bg-emerald-100/70 border-emerald-400 ring-2 ring-emerald-400/30'
+                    : 'bg-emerald-50 border-emerald-200 hover:bg-emerald-100/50'
                     }`}
                 >
                   <div className="text-xs font-semibold uppercase tracking-wider text-[#5C8A3A] flex items-center justify-between">
@@ -738,8 +738,8 @@ export default function UploadLeadsPage({ onNavigateToLeads }) {
                 <div
                   onClick={() => setIssueFilter('duplicate')}
                   className={`p-4 rounded-2xl border transition-all cursor-pointer ${issueFilter === 'duplicate'
-                      ? 'bg-amber-100/70 border-amber-400 ring-2 ring-amber-400/30'
-                      : 'bg-amber-50 border-amber-200 hover:bg-amber-100/50'
+                    ? 'bg-amber-100/70 border-amber-400 ring-2 ring-amber-400/30'
+                    : 'bg-amber-50 border-amber-200 hover:bg-amber-100/50'
                     }`}
                 >
                   <div className="text-xs font-semibold uppercase tracking-wider text-[#D89C2B] flex items-center justify-between">
@@ -757,8 +757,8 @@ export default function UploadLeadsPage({ onNavigateToLeads }) {
                 <div
                   onClick={() => setIssueFilter('validation_error')}
                   className={`p-4 rounded-2xl border transition-all cursor-pointer ${issueFilter === 'validation_error'
-                      ? 'bg-rose-100/70 border-rose-400 ring-2 ring-rose-400/30'
-                      : 'bg-rose-50 border-rose-200 hover:bg-rose-100/50'
+                    ? 'bg-rose-100/70 border-rose-400 ring-2 ring-rose-400/30'
+                    : 'bg-rose-50 border-rose-200 hover:bg-rose-100/50'
                     }`}
                 >
                   <div className="text-xs font-semibold uppercase tracking-wider text-[#B23A2E] flex items-center justify-between">
@@ -934,10 +934,10 @@ export default function UploadLeadsPage({ onNavigateToLeads }) {
                 onDragOver={handleDrag}
                 onDrop={handleDrop}
                 className={`relative p-8 sm:p-12 border-2 border-dashed rounded-3xl text-center transition-all bg-white ${dragActive
-                    ? 'border-[#E8622C] bg-[#E8622C]/5 scale-[1.01]'
-                    : file
-                      ? 'border-emerald-400 bg-emerald-50/20'
-                      : 'border-stone-300 hover:border-[#E8622C]/60'
+                  ? 'border-[#E8622C] bg-[#E8622C]/5 scale-[1.01]'
+                  : file
+                    ? 'border-emerald-400 bg-emerald-50/20'
+                    : 'border-stone-300 hover:border-[#E8622C]/60'
                   }`}
               >
                 <input
