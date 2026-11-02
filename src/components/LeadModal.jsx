@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, Save, User, Phone, MessageSquare, Mail, Building, MapPin, Tag, Calendar, AlertCircle, Megaphone } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { leadApi } from '../api/client';
 
 const STATUS_OPTIONS = [
   'New',
@@ -31,9 +32,27 @@ export default function LeadModal({
   onClose,
   onSubmit,
   initialData = null,
-  salesUsers = []
+  salesUsers = [],
+  availableCampaigns = []
 }) {
   const { isAdmin } = useAuth();
+  const [campaignList, setCampaignList] = useState(availableCampaigns || []);
+
+  useEffect(() => {
+    if (availableCampaigns && availableCampaigns.length > 0) {
+      setCampaignList(availableCampaigns);
+    } else {
+      leadApi.getCampaigns()
+        .then(res => {
+          const names = (res.campaigns || []).map(c => c.campaign).filter(Boolean);
+          if (names.length > 0) {
+            setCampaignList(names);
+          }
+        })
+        .catch(() => {});
+    }
+  }, [availableCampaigns]);
+
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -312,9 +331,16 @@ export default function LeadModal({
 
             {/* Ad Campaign */}
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
-                Ad Campaign
-              </label>
+              <div className="flex items-center justify-between mb-1">
+                <label className="block text-xs font-semibold text-slate-700">
+                  Ad Campaign
+                </label>
+                {campaignList.length > 0 && (
+                  <span className="text-[10px] text-slate-400 font-medium">
+                    {campaignList.length} previous campaign{campaignList.length === 1 ? '' : 's'}
+                  </span>
+                )}
+              </div>
               <div className="relative">
                 <Megaphone className="w-4 h-4 absolute left-3 top-3 text-[#E8622C]" />
                 <input
@@ -326,13 +352,41 @@ export default function LeadModal({
                   className="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#E8622C]/20 focus:border-[#E8622C]"
                 />
                 <datalist id="campaign-suggestions">
-                  <option value="Meta Ads - Corporate NFC" />
-                  <option value="Meta Ads - Reseller Partner" />
-                  <option value="Meta Ads - Event Badges" />
-                  <option value="Meta Ads - Review Stands" />
-                  <option value="Meta Ads - Direct Inquiry" />
+                  {campaignList.map((c) => (
+                    <option key={c} value={c} />
+                  ))}
                 </datalist>
               </div>
+
+              {/* Quick Select from Previous Campaigns */}
+              {campaignList.length > 0 && (
+                <div className="mt-2">
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5 flex items-center justify-between">
+                    <span>Select Previous Campaign:</span>
+                    <span className="text-[10px] font-normal text-slate-400">or type a new name</span>
+                  </div>
+                  <div className="flex flex-wrap gap-1.5 max-h-28 overflow-y-auto p-1.5 bg-slate-50/90 rounded-xl border border-slate-200/80">
+                    {campaignList.map((camp) => {
+                      const isSelected = (formData.campaign_name || '').trim().toLowerCase() === camp.trim().toLowerCase();
+                      return (
+                        <button
+                          key={camp}
+                          type="button"
+                          onClick={() => setFormData(prev => ({ ...prev, campaign_name: camp }))}
+                          className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5 ${
+                            isSelected
+                              ? 'bg-[#E8622C] text-white shadow-2xs'
+                              : 'bg-white text-slate-700 hover:bg-[#FDF8F5] hover:text-[#E8622C] border border-slate-200'
+                          }`}
+                        >
+                          <Megaphone className={`w-2.5 h-2.5 ${isSelected ? 'text-white' : 'text-[#E8622C]'}`} />
+                          <span>{camp}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Source */}

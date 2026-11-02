@@ -1233,6 +1233,7 @@ export default function LeadsPage({ initialFilter = {}, openAddModalTrigger = 0 
           isOpen={isAddModalOpen}
           initialData={editingLead}
           salesUsers={salesUsers}
+          availableCampaigns={availableCampaigns}
           onClose={() => {
             setIsAddModalOpen(false);
             setEditingLead(null);
