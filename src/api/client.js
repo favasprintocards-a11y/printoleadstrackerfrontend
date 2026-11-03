@@ -210,12 +210,13 @@ export const leadApi = {
       blob = await apiRequest(`/leads/export?${query.toString()}`, { isBlob: true });
     }
     const isSelected = !!params.lead_ids;
+    const todayIST = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kolkata' }).format(new Date());
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
     a.download = isSelected
-      ? `selected_leads_export_${new Date().toISOString().split('T')[0]}.xlsx`
-      : `leads_export_${new Date().toISOString().split('T')[0]}.xlsx`;
+      ? `selected_leads_export_${todayIST}.xlsx`
+      : `leads_export_${todayIST}.xlsx`;
     a.click();
     window.URL.revokeObjectURL(url);
   },
@@ -237,12 +238,13 @@ export const leadApi = {
       blob = await apiRequest(`/leads/report/salesperson?${query.toString()}`, { isBlob: true });
     }
     const isSelected = !!params.lead_ids;
+    const todayIST = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kolkata' }).format(new Date());
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
     a.download = isSelected
-      ? `selected_leads_report_${new Date().toISOString().split('T')[0]}.xlsx`
-      : `salesperson_leads_report_${new Date().toISOString().split('T')[0]}.xlsx`;
+      ? `selected_leads_report_${todayIST}.xlsx`
+      : `salesperson_leads_report_${todayIST}.xlsx`;
     a.click();
     window.URL.revokeObjectURL(url);
   }
