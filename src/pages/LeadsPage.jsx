@@ -271,21 +271,29 @@ export default function LeadsPage({ initialFilter = {}, openAddModalTrigger = 0 
   };
 
   // Export to Excel (Selected only if leads checked, otherwise filtered)
-  const handleExport = (onlySelected = false) => {
-    if (onlySelected || selectedIds.length > 0) {
-      leadApi.exportLeads({ lead_ids: selectedIds });
-    } else {
-      leadApi.exportLeads({
-        search,
-        status: statusFilter,
-        assigned_to: assignedFilter,
-        city: cityFilter,
-        campaign: campaignFilter,
-        date_from: dateFrom,
-        date_to: dateTo,
-        sort_by: sortBy,
-        sort_order: sortOrder
-      });
+  const [exporting, setExporting] = useState(false);
+  const handleExport = async (onlySelected = false) => {
+    setExporting(true);
+    try {
+      if (onlySelected || selectedIds.length > 0) {
+        await leadApi.exportLeads({ lead_ids: selectedIds });
+      } else {
+        await leadApi.exportLeads({
+          search,
+          status: statusFilter,
+          assigned_to: assignedFilter,
+          city: cityFilter,
+          campaign: campaignFilter,
+          date_from: dateFrom,
+          date_to: dateTo,
+          sort_by: sortBy,
+          sort_order: sortOrder
+        });
+      }
+    } catch (err) {
+      alert('Failed to export leads: ' + (err.message || 'Unknown error'));
+    } finally {
+      setExporting(false);
     }
   };
 
@@ -342,7 +350,8 @@ export default function LeadsPage({ initialFilter = {}, openAddModalTrigger = 0 
             <div className="flex items-center gap-2">
               <button
                 onClick={() => handleExport(false)}
-                className={`flex items-center gap-1.5 px-3 py-1.5 border rounded-xl text-xs font-semibold transition-all cursor-pointer ${selectedIds.length > 0
+                disabled={exporting}
+                className={`flex items-center gap-1.5 px-3 py-1.5 border rounded-xl text-xs font-semibold transition-all cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed ${selectedIds.length > 0
                   ? 'border-[#E8622C] bg-[#E8622C]/10 text-[#E8622C]'
                   : 'border-slate-200 hover:bg-slate-50 text-slate-700'
                   }`}
@@ -350,7 +359,7 @@ export default function LeadsPage({ initialFilter = {}, openAddModalTrigger = 0 
               >
                 <Download className="w-3.5 h-3.5 text-slate-500" />
                 <span className="hidden sm:inline">
-                  {selectedIds.length > 0 ? `Export (${selectedIds.length})` : 'Export'}
+                  {exporting ? 'Exporting...' : selectedIds.length > 0 ? `Export (${selectedIds.length})` : 'Export'}
                 </span>
               </button>
               <button
