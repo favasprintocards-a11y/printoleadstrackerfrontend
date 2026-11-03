@@ -837,6 +837,20 @@ export default function LeadsPage({ initialFilter = {}, openAddModalTrigger = 0 
                       </div>
                     )}
 
+                    {/* Latest Remark */}
+                    {lead.remarks && (
+                      <div
+                        onClick={() => setTimelineLeadId(lead.id)}
+                        className="flex items-start gap-1.5 text-xs pt-1.5 cursor-pointer group"
+                        title="Click to view history or update note"
+                      >
+                        <span className="text-slate-400 text-[11px] shrink-0 font-medium">Remark:</span>
+                        <span className="text-[11px] bg-slate-50 group-hover:bg-[#FAF8F5] border border-slate-200/80 group-hover:border-[#E8622C]/40 rounded-lg px-2 py-0.5 text-slate-700 truncate w-full font-medium transition-colors">
+                          {lead.remarks}
+                        </span>
+                      </div>
+                    )}
+
                     {/* Mobile Thumb-Friendly Action Buttons */}
                     <div className="flex items-center gap-2 pt-3 mt-2 border-t border-slate-100">
                       {/* WhatsApp Action */}
@@ -1005,6 +1019,7 @@ export default function LeadsPage({ initialFilter = {}, openAddModalTrigger = 0 
                       )}
                     </div>
                   </th>
+                  <th className="p-3.5">Remarks</th>
                   <th className="p-3.5">Assigned Rep</th>
                   <th className="p-3.5 text-right">Actions</th>
                 </tr>
@@ -1013,13 +1028,13 @@ export default function LeadsPage({ initialFilter = {}, openAddModalTrigger = 0 
               <tbody className="divide-y divide-slate-100">
                 {loading ? (
                   <tr>
-                    <td colSpan={9} className="py-12 text-center text-slate-400">
+                    <td colSpan={10} className="py-12 text-center text-slate-400">
                       Loading leads database...
                     </td>
                   </tr>
                 ) : leads.length === 0 ? (
                   <tr>
-                    <td colSpan={9} className="py-12 text-center text-slate-400">
+                    <td colSpan={10} className="py-12 text-center text-slate-400">
                       No leads found matching current search and filter criteria.
                     </td>
                   </tr>
@@ -1028,7 +1043,7 @@ export default function LeadsPage({ initialFilter = {}, openAddModalTrigger = 0 
                     <React.Fragment key={dateKey}>
                       {/* Date separator row */}
                       <tr>
-                        <td colSpan={9} className="px-4 py-2.5 bg-[#FDF8F5] border-y border-[#E8622C]/20">
+                        <td colSpan={10} className="px-4 py-2.5 bg-[#FDF8F5] border-y border-[#E8622C]/20">
                           <div className="flex items-center gap-2.5">
                             <label className="flex items-center gap-2 cursor-pointer select-none">
                               <input
@@ -1136,13 +1151,29 @@ export default function LeadsPage({ initialFilter = {}, openAddModalTrigger = 0 
                             </td>
 
                             {/* Follow-up Date */}
-                            <td className="p-3.5">
+                            <td className="p-3.5 whitespace-nowrap">
                               {lead.follow_up_date ? (
                                 <span className={`inline-block px-2.5 py-1 rounded-full text-[11px] border font-semibold ${followUp.badgeClass}`}>
                                   {followUp.type === 'today' ? 'Today' : followUp.type === 'overdue' ? `Overdue (${formatDate(lead.follow_up_date)})` : formatDate(lead.follow_up_date)}
                                 </span>
                               ) : (
                                 <span className="text-slate-400 text-[11px]">—</span>
+                              )}
+                            </td>
+
+                            {/* Remarks */}
+                            <td className="p-3.5 max-w-[200px]">
+                              {lead.remarks ? (
+                                <div
+                                  onClick={() => setTimelineLeadId(lead.id)}
+                                  className="text-[11px] text-slate-700 font-medium bg-slate-50 hover:bg-[#FAF8F5] border border-slate-200/80 hover:border-[#E8622C]/40 rounded-xl px-2.5 py-1.5 transition-all cursor-pointer group flex items-start gap-1.5"
+                                  title={`Click to view timeline: ${lead.remarks}`}
+                                >
+                                  <MessageSquare className="w-3 h-3 text-[#E8622C] shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
+                                  <span className="truncate block">{lead.remarks}</span>
+                                </div>
+                              ) : (
+                                <span className="text-slate-300 text-[11px] pl-2">—</span>
                               )}
                             </td>
 
