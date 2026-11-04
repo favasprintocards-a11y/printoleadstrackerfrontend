@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { 
-  X, 
-  Check, 
-  Users, 
-  Tag, 
-  AlertCircle, 
-  Shuffle, 
-  UserCheck, 
-  UserX, 
-  CheckSquare, 
+import {
+  X,
+  Check,
+  Users,
+  Tag,
+  AlertCircle,
+  Shuffle,
+  UserCheck,
+  UserX,
+  CheckSquare,
   Square,
   Sparkles,
   Megaphone
@@ -111,11 +111,11 @@ export default function BulkActionModal({
   const isAllUsersSelected = activeSalesUsers.length > 0 && selectedUserIds.length === activeSalesUsers.length;
 
   // Calculation for round robin distribution
-  const perRepCount = selectedUserIds.length > 0 
+  const perRepCount = selectedUserIds.length > 0
     ? Math.floor(selectedCount / selectedUserIds.length)
     : 0;
-  const remainder = selectedUserIds.length > 0 
-    ? selectedCount % selectedUserIds.length 
+  const remainder = selectedUserIds.length > 0
+    ? selectedCount % selectedUserIds.length
     : 0;
 
   return (
@@ -142,11 +142,10 @@ export default function BulkActionModal({
           {isAdmin && (
             <button
               onClick={() => setActiveTab('assign')}
-              className={`flex-1 py-2 text-xs font-semibold rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
-                activeTab === 'assign'
+              className={`flex-1 py-2 text-xs font-semibold rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 ${activeTab === 'assign'
                   ? 'bg-[#E8622C] text-white shadow-xs'
                   : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-              }`}
+                }`}
             >
               <Users className="w-3.5 h-3.5" />
               <span>Sales Team</span>
@@ -156,11 +155,10 @@ export default function BulkActionModal({
           {isAdmin && (
             <button
               onClick={() => setActiveTab('campaign')}
-              className={`flex-1 py-2 text-xs font-semibold rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
-                activeTab === 'campaign'
+              className={`flex-1 py-2 text-xs font-semibold rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 ${activeTab === 'campaign'
                   ? 'bg-[#E8622C] text-white shadow-xs'
                   : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-              }`}
+                }`}
             >
               <Megaphone className="w-3.5 h-3.5" />
               <span>Ad Campaign</span>
@@ -169,11 +167,10 @@ export default function BulkActionModal({
 
           <button
             onClick={() => setActiveTab('status')}
-            className={`flex-1 py-2 text-xs font-semibold rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
-              activeTab === 'status'
+            className={`flex-1 py-2 text-xs font-semibold rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 ${activeTab === 'status'
                 ? 'bg-[#E8622C] text-white shadow-xs'
                 : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-            }`}
+              }`}
           >
             <Tag className="w-3.5 h-3.5" />
             <span>Update Status</span>
@@ -200,11 +197,10 @@ export default function BulkActionModal({
                   <button
                     type="button"
                     onClick={() => setAssignMode('distribute')}
-                    className={`p-3 rounded-2xl border text-left transition-all cursor-pointer ${
-                      assignMode === 'distribute'
+                    className={`p-3 rounded-2xl border text-left transition-all cursor-pointer ${assignMode === 'distribute'
                         ? 'border-[#E8622C] bg-[#E8622C]/10 text-[#2B2B2B] ring-2 ring-[#E8622C]/20'
                         : 'border-slate-200 hover:bg-slate-50 text-slate-700'
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center gap-1.5 font-bold text-xs">
                       <Shuffle className="w-3.5 h-3.5 text-[#E8622C]" />
@@ -218,11 +214,10 @@ export default function BulkActionModal({
                   <button
                     type="button"
                     onClick={() => setAssignMode('coassign')}
-                    className={`p-3 rounded-2xl border text-left transition-all cursor-pointer ${
-                      assignMode === 'coassign'
+                    className={`p-3 rounded-2xl border text-left transition-all cursor-pointer ${assignMode === 'coassign'
                         ? 'border-[#E8622C] bg-[#E8622C]/10 text-[#2B2B2B] ring-2 ring-[#E8622C]/20'
                         : 'border-slate-200 hover:bg-slate-50 text-slate-700'
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center gap-1.5 font-bold text-xs">
                       <UserCheck className="w-3.5 h-3.5 text-[#E8622C]" />
@@ -238,11 +233,10 @@ export default function BulkActionModal({
                   <button
                     type="button"
                     onClick={() => setAssignMode(assignMode === 'unassign' ? 'distribute' : 'unassign')}
-                    className={`text-[11px] font-semibold cursor-pointer ${
-                      assignMode === 'unassign'
+                    className={`text-[11px] font-semibold cursor-pointer ${assignMode === 'unassign'
                         ? 'text-rose-600 underline font-bold'
                         : 'text-slate-400 hover:text-rose-600'
-                    }`}
+                      }`}
                   >
                     {assignMode === 'unassign' ? '✓ Set to Unassign Mode' : 'Or unassign all selected leads'}
                   </button>
@@ -277,17 +271,16 @@ export default function BulkActionModal({
                           <div
                             key={u.id}
                             onClick={() => toggleSelectUser(u.id)}
-                            className={`p-2.5 rounded-2xl border flex items-center justify-between cursor-pointer transition-all ${
-                              isChecked
+                            className={`p-2.5 rounded-2xl border flex items-center justify-between cursor-pointer transition-all ${isChecked
                                 ? 'bg-[#E8622C]/10 border-[#E8622C]'
                                 : 'bg-slate-50 hover:bg-slate-100/70 border-slate-200'
-                            }`}
+                              }`}
                           >
                             <div className="flex items-center gap-3">
                               <input
                                 type="checkbox"
                                 checked={isChecked}
-                                onChange={() => {}} // handled by parent div
+                                onChange={() => { }} // handled by parent div
                                 className="rounded border-slate-300 text-[#E8622C] focus:ring-[#E8622C] pointer-events-none"
                               />
                               <div>
@@ -374,11 +367,10 @@ export default function BulkActionModal({
                       key={camp}
                       type="button"
                       onClick={() => setCampaignName(camp)}
-                      className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
-                        campaignName === camp
+                      className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${campaignName === camp
                           ? 'bg-[#E8622C] text-white border-[#E8622C] shadow-xs'
                           : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
-                      }`}
+                        }`}
                     >
                       {camp}
                     </button>

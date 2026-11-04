@@ -26,7 +26,7 @@ export function getWhatsAppUrl(phone, leadName = '') {
     clean = '91' + clean;
   }
   const text = encodeURIComponent(
-    leadName 
+    leadName
       ? `Hello ${leadName}, this is regarding your recent inquiry. How can we assist you today?`
       : `Hello, this is regarding your recent inquiry. How can we assist you today?`
   );
