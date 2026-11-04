@@ -10,7 +10,8 @@ const STATUS_OPTIONS = [
   'Quotation Sent',
   'Won',
   'Lost',
-  'Not Reachable'
+  'Not Reachable',
+  'Already Customer'
 ];
 
 const SOURCE_OPTIONS = [

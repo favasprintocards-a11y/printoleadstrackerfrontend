@@ -114,6 +114,11 @@ export const STATUS_CONFIG = {
     bg: 'bg-[#FAF8F5] text-[#8C8782] border-[#E2DDD6]',
     dot: 'bg-[#8C8782]',
     border: 'border-[#8C8782]'
+  },
+  'Already Customer': {
+    bg: 'bg-indigo-50 text-indigo-700 border-indigo-200',
+    dot: 'bg-indigo-600',
+    border: 'border-indigo-600'
   }
 };
 
@@ -122,7 +127,7 @@ export const STATUS_CONFIG = {
  */
 export function getFollowUpStatus(followUpDate, leadStatus) {
   if (!followUpDate) return { type: 'none', label: 'No date', badgeClass: 'text-[#8C8782]' };
-  if (['Won', 'Lost'].includes(leadStatus)) {
+  if (['Won', 'Lost', 'Already Customer'].includes(leadStatus)) {
     return { type: 'closed', label: formatDate(followUpDate), badgeClass: 'text-[#8C8782]' };
   }
 

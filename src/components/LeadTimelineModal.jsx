@@ -32,7 +32,8 @@ const STATUS_OPTIONS = [
   'Quotation Sent',
   'Won',
   'Lost',
-  'Not Reachable'
+  'Not Reachable',
+  'Already Customer'
 ];
 
 export default function LeadTimelineModal({

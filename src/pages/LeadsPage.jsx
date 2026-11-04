@@ -50,7 +50,8 @@ const STATUS_LIST = [
   'Quotation Sent',
   'Won',
   'Lost',
-  'Not Reachable'
+  'Not Reachable',
+  'Already Customer'
 ];
 
 export default function LeadsPage({ initialFilter = {}, openAddModalTrigger = 0 }) {
